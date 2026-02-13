@@ -1,0 +1,43 @@
+# Unity
+[Dd]ebug/
+[Tt]est[Aa]ssets/
+[Ll]ogs/
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Uu]serSettings/
+
+# Visual Studio
+*.suo
+*.user
+*.userprefs
+*.csproj
+*.unityproj
+*.tmp
+*.pidb
+*.sln
+*.tmp
+*.userprefs
+.DS_Store
+
+# Rider
+.idea/
+*.sln.iml
+*.sln.ide
+
+# Mac
+*.DS_Store
+
+# Other files
+*.swp
+*.swo
+*.tmp
+*.log
+*.bak
+*.old
+
+# Visual Studio Code
+.vscode/
+*.code-workspace

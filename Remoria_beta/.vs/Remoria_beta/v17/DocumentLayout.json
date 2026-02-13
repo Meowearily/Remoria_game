@@ -1,0 +1,108 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remoria_beta\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A54B0734-99DE-3946-0DFA-3E14D7B63776}|Assembly-CSharp.csproj|C:\\Users\\kukli\\Desktop\\unity\\projects\\Remoria_beta\\assets\\scripts\\playercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A54B0734-99DE-3946-0DFA-3E14D7B63776}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\playercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A54B0734-99DE-3946-0DFA-3E14D7B63776}|Assembly-CSharp.csproj|c:\\users\\kukli\\desktop\\unity\\projects\\remoria_beta\\assets\\scripts\\playermotor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A54B0734-99DE-3946-0DFA-3E14D7B63776}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\playermotor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A54B0734-99DE-3946-0DFA-3E14D7B63776}|Assembly-CSharp.csproj|C:\\Users\\kukli\\Desktop\\unity\\projects\\Remoria_beta\\assets\\scripts\\cameracontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A54B0734-99DE-3946-0DFA-3E14D7B63776}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\cameracontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A54B0734-99DE-3946-0DFA-3E14D7B63776}|Assembly-CSharp.csproj|c:\\users\\kukli\\desktop\\unity\\projects\\remoria_beta\\assets\\scripts\\characteranimator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A54B0734-99DE-3946-0DFA-3E14D7B63776}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\characteranimator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A54B0734-99DE-3946-0DFA-3E14D7B63776}|Assembly-CSharp.csproj|C:\\Users\\kukli\\Desktop\\unity\\projects\\Remoria_beta\\assets\\scripts\\interactable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A54B0734-99DE-3946-0DFA-3E14D7B63776}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\interactable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 4,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "CharacterAnimator.cs",
+              "DocumentMoniker": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remoria_beta\\Assets\\Scripts\\CharacterAnimator.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\CharacterAnimator.cs",
+              "ToolTip": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remoria_beta\\Assets\\Scripts\\CharacterAnimator.cs",
+              "RelativeToolTip": "Assets\\Scripts\\CharacterAnimator.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-16T01:44:22.229Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Interactable.cs",
+              "DocumentMoniker": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remoria_beta\\Assets\\Scripts\\Interactable.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Interactable.cs",
+              "ToolTip": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remoria_beta\\Assets\\Scripts\\Interactable.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Interactable.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAC8AAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-15T13:41:17.536Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "PlayerMotor.cs",
+              "DocumentMoniker": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remoria_beta\\Assets\\Scripts\\PlayerMotor.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\PlayerMotor.cs",
+              "ToolTip": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remoria_beta\\Assets\\Scripts\\PlayerMotor.cs",
+              "RelativeToolTip": "Assets\\Scripts\\PlayerMotor.cs",
+              "ViewState": "AgIAABgAAAAAAAAAAAAYwCMAAAAvAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-15T13:33:59.557Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "PlayerController.cs",
+              "DocumentMoniker": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remoria_beta\\Assets\\Scripts\\PlayerController.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\PlayerController.cs",
+              "ToolTip": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remoria_beta\\Assets\\Scripts\\PlayerController.cs",
+              "RelativeToolTip": "Assets\\Scripts\\PlayerController.cs",
+              "ViewState": "AgIAABMAAAAAAAAAAAAuwCEAAABJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-15T13:33:56.985Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "CameraController.cs",
+              "DocumentMoniker": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remoria_beta\\Assets\\Scripts\\CameraController.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\CameraController.cs",
+              "ToolTip": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remoria_beta\\Assets\\Scripts\\CameraController.cs",
+              "RelativeToolTip": "Assets\\Scripts\\CameraController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-15T13:33:54.442Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
