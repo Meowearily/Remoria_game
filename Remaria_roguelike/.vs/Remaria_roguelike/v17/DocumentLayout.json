@@ -1,0 +1,109 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remaria_roguelike\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{3FB06B4F-AD38-0873-9124-301F34B0139D}|Assembly-CSharp.csproj|c:\\users\\kukli\\desktop\\unity\\projects\\remaria_roguelike\\assets\\scripts\\camera\\thirdpersoncamera.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3FB06B4F-AD38-0873-9124-301F34B0139D}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\camera\\thirdpersoncamera.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3FB06B4F-AD38-0873-9124-301F34B0139D}|Assembly-CSharp.csproj|c:\\users\\kukli\\desktop\\unity\\projects\\remaria_roguelike\\assets\\scripts\\ui\\healthbarui.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3FB06B4F-AD38-0873-9124-301F34B0139D}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\ui\\healthbarui.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3FB06B4F-AD38-0873-9124-301F34B0139D}|Assembly-CSharp.csproj|c:\\users\\kukli\\desktop\\unity\\projects\\remaria_roguelike\\assets\\scripts\\player\\playermovement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3FB06B4F-AD38-0873-9124-301F34B0139D}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\player\\playermovement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3FB06B4F-AD38-0873-9124-301F34B0139D}|Assembly-CSharp.csproj|c:\\users\\kukli\\desktop\\unity\\projects\\remaria_roguelike\\assets\\scripts\\player\\playerinteraction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3FB06B4F-AD38-0873-9124-301F34B0139D}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\player\\playerinteraction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3FB06B4F-AD38-0873-9124-301F34B0139D}|Assembly-CSharp.csproj|c:\\users\\kukli\\desktop\\unity\\projects\\remaria_roguelike\\assets\\scripts\\ui\\enemyhealthbarui.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3FB06B4F-AD38-0873-9124-301F34B0139D}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\ui\\enemyhealthbarui.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "HealthBarUI.cs",
+              "DocumentMoniker": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remaria_roguelike\\Assets\\Scripts\\UI\\HealthBarUI.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\UI\\HealthBarUI.cs",
+              "ToolTip": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remaria_roguelike\\Assets\\Scripts\\UI\\HealthBarUI.cs",
+              "RelativeToolTip": "Assets\\Scripts\\UI\\HealthBarUI.cs",
+              "ViewState": "AgIAAEUAAAAAAAAAAAAAwGIAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-26T00:36:59.819Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ThirdPersonCamera.cs",
+              "DocumentMoniker": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remaria_roguelike\\Assets\\Scripts\\Camera\\ThirdPersonCamera.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Camera\\ThirdPersonCamera.cs",
+              "ToolTip": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remaria_roguelike\\Assets\\Scripts\\Camera\\ThirdPersonCamera.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Camera\\ThirdPersonCamera.cs",
+              "ViewState": "AgIAACAAAAAAAAAAAAAuwCwAAAA4AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-26T00:35:05.737Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "PlayerMovement.cs",
+              "DocumentMoniker": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remaria_roguelike\\Assets\\Scripts\\Player\\PlayerMovement.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Player\\PlayerMovement.cs",
+              "ToolTip": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remaria_roguelike\\Assets\\Scripts\\Player\\PlayerMovement.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Player\\PlayerMovement.cs",
+              "ViewState": "AgIAAOwAAAAAAAAAAAAAwAkBAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-26T00:32:13.669Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "PlayerInteraction.cs",
+              "DocumentMoniker": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remaria_roguelike\\Assets\\Scripts\\Player\\PlayerInteraction.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Player\\PlayerInteraction.cs",
+              "ToolTip": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remaria_roguelike\\Assets\\Scripts\\Player\\PlayerInteraction.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Player\\PlayerInteraction.cs",
+              "ViewState": "AgIAAIgAAAAAAAAAAAAAwKUAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-26T00:14:13.702Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "EnemyHealthBarUI.cs",
+              "DocumentMoniker": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remaria_roguelike\\Assets\\Scripts\\UI\\EnemyHealthBarUI.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\UI\\EnemyHealthBarUI.cs",
+              "ToolTip": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remaria_roguelike\\Assets\\Scripts\\UI\\EnemyHealthBarUI.cs",
+              "RelativeToolTip": "Assets\\Scripts\\UI\\EnemyHealthBarUI.cs",
+              "ViewState": "AgIAAHcAAAAAAAAAAAAAwJQAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-26T00:12:53.423Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
