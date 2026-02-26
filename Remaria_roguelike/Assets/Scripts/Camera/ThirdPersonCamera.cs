@@ -71,23 +71,19 @@ namespace Remoria.CameraSystem
 
         private void FollowTarget()
         {
-            // Calculate camera offset from angle and distance.
-            // Convert polar coordinates (angle, distance) to cartesian offset.
             float angleRad = cameraAngle * Mathf.Deg2Rad;
             float horizontalRad = horizontalAngle * Mathf.Deg2Rad;
 
-            // Height = distance * sin(angle), horizontal distance = distance * cos(angle)
             float height = distance * Mathf.Sin(angleRad);
             float horizontalDist = distance * Mathf.Cos(angleRad);
 
-            // Apply horizontal rotation for the viewing direction.
             float offsetX = -Mathf.Sin(horizontalRad) * horizontalDist;
             float offsetZ = -Mathf.Cos(horizontalRad) * horizontalDist;
 
             Vector3 offset = new Vector3(offsetX, height, offsetZ);
             Vector3 desiredPosition = target.position + offset;
 
-            // Smooth follow using SmoothDamp (smoother than Lerp, no jitter).
+            // Smooth follow — only translates, never rotates.
             transform.position = Vector3.SmoothDamp(
                 transform.position,
                 desiredPosition,
@@ -95,9 +91,9 @@ namespace Remoria.CameraSystem
                 1f / followSpeed
             );
 
-            // Always look at the player (slightly above feet).
-            Vector3 lookAtPoint = target.position + Vector3.up * lookAtHeight;
-            transform.LookAt(lookAtPoint);
+            // FIXED rotation — always the same angle, no wobble.
+            // The camera looks down at cameraAngle degrees, rotated horizontalAngle around Y.
+            transform.rotation = Quaternion.Euler(cameraAngle, horizontalAngle, 0f);
         }
     }
 }

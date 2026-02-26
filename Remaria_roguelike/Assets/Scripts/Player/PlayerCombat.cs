@@ -5,26 +5,18 @@ using Remoria.Combat;
 namespace Remoria.Player
 {
     /// <summary>
-    /// Handles melee and ranged attacks for the player.
+    /// Handles melee, ranged attacks, and enemy lock-on targeting.
     /// 
     /// Controls:
-    ///   Left Mouse Button → Melee attack
-    ///   Right Mouse Button → Ranged attack (fires a projectile)
+    ///   Left Mouse Button   → Melee attack
+    ///   Right Mouse Button  → Ranged attack (fires a projectile)
+    ///   Middle Mouse Button  → Lock-on to enemy under cursor (click again to unlock)
     /// 
-    /// How melee works:
-    ///   - Uses Physics.OverlapSphere to find all colliders in a sphere
-    ///     in front of the player.
-    ///   - Checks each hit for IDamageable interface.
-    ///   - Deals damage to everything damageable in range.
-    /// 
-    /// How ranged works:
-    ///   - Instantiates a Projectile prefab at a spawn point.
-    ///   - The Projectile script handles movement and collision.
-    /// 
-    /// Required setup:
-    ///   - Assign the projectilePrefab in the Inspector.
-    ///   - Create an empty child GameObject called "ProjectileSpawnPoint" 
-    ///     positioned in front of the player, and assign it.
+    /// Lock-on:
+    ///   When locked on, the player automatically rotates to face the target enemy.
+    ///   Attacks are directed toward the locked target.
+    ///   A small indicator appears above the locked enemy.
+    ///   Press middle mouse again (or target dies) to unlock.
     /// </summary>
     public class PlayerCombat : MonoBehaviour
     {
@@ -50,7 +42,7 @@ namespace Remoria.Player
         [Tooltip("The projectile prefab to instantiate")]
         [SerializeField] private GameObject projectilePrefab;
 
-        [Tooltip("Where the projectile spawns (create an empty child object in front of the player)")]
+        [Tooltip("Where the projectile spawns")]
         [SerializeField] private Transform projectileSpawnPoint;
 
         [Tooltip("Damage dealt by each projectile")]
@@ -62,19 +54,49 @@ namespace Remoria.Player
         [Tooltip("Seconds between ranged attacks")]
         [SerializeField] private float rangedCooldown = 0.8f;
 
+        // ─── Lock-On Settings ──────────────────────────────────────────
+        [Header("Lock-On Targeting")]
+        [Tooltip("Maximum distance to lock onto an enemy")]
+        [SerializeField] private float lockOnMaxDistance = 50f;
+
+        [Tooltip("Which layers can be locked onto (set to 'Enemy' or 'Default')")]
+        [SerializeField] private LayerMask lockOnLayers;
+
+        [Tooltip("How quickly the player rotates toward the locked target")]
+        [SerializeField] private float lockOnRotationSpeed = 12f;
+
         // ─── Runtime State ─────────────────────────────────────────────
-        private float _lastMeleeTime = -999f;  // When the last melee attack happened.
-        private float _lastRangedTime = -999f;  // When the last ranged attack happened.
-        // Starting at -999 ensures the first attack is always ready.
+        private float _lastMeleeTime = -999f;
+        private float _lastRangedTime = -999f;
+        private Animator _animator;
+
+        // Animator parameter hashes (cached for performance).
+        private static readonly int AnimMeleeAttack = Animator.StringToHash("MeleeAttack");
+        private static readonly int AnimRangedAttack = Animator.StringToHash("RangedAttack");
+
+        // Lock-on
+        private Transform _lockOnTarget;
+        private GameObject _lockOnIndicator; // Visual marker above locked enemy.
+
+        // ─── Public Properties ─────────────────────────────────────────
+        /// <summary>The currently locked-on target (null if none).</summary>
+        public Transform LockOnTarget => _lockOnTarget;
+
+        /// <summary>Whether the player is locked onto a target.</summary>
+        public bool HasLockOn => _lockOnTarget != null;
 
         // ─── Unity Callbacks ───────────────────────────────────────────
+
+        private void Start()
+        {
+            _animator = GetComponentInChildren<Animator>();
+        }
 
         private void Update()
         {
             if (!GameManager.Instance.IsPlaying) return;
 
             // Left Mouse Button = Melee.
-            // GetMouseButtonDown(0) fires once when the button is pressed.
             if (Input.GetMouseButtonDown(0))
             {
                 TryMeleeAttack();
@@ -85,29 +107,150 @@ namespace Remoria.Player
             {
                 TryRangedAttack();
             }
+
+            // Middle Mouse Button = Lock-On Toggle.
+            if (Input.GetMouseButtonDown(2))
+            {
+                ToggleLockOn();
+            }
+
+            // If locked on, rotate toward the target.
+            if (_lockOnTarget != null)
+            {
+                // Check if target was destroyed.
+                Health targetHealth = _lockOnTarget.GetComponent<Health>();
+                if (targetHealth != null && targetHealth.IsDead)
+                {
+                    ClearLockOn();
+                }
+                else
+                {
+                    RotateTowardTarget();
+                }
+            }
+        }
+
+        // ─── Lock-On System ────────────────────────────────────────────
+
+        private void ToggleLockOn()
+        {
+            if (_lockOnTarget != null)
+            {
+                // Already locked on — unlock.
+                ClearLockOn();
+                Debug.Log("[PlayerCombat] Lock-on cleared.");
+                return;
+            }
+
+            // Raycast from the mouse position into the 3D world.
+            Ray ray = UnityEngine.Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit, lockOnMaxDistance, lockOnLayers))
+            {
+                // Check if what we hit has a Health component (i.e., it's an enemy).
+                Health health = hit.collider.GetComponent<Health>();
+                if (health != null && !health.IsDead)
+                {
+                    _lockOnTarget = hit.collider.transform;
+                    CreateLockOnIndicator();
+                    Debug.Log($"[PlayerCombat] Locked onto {_lockOnTarget.name}!");
+                }
+            }
+        }
+
+        private void ClearLockOn()
+        {
+            _lockOnTarget = null;
+
+            if (_lockOnIndicator != null)
+            {
+                Destroy(_lockOnIndicator);
+                _lockOnIndicator = null;
+            }
+        }
+
+        /// <summary>
+        /// Smoothly rotates the player to face the locked target.
+        /// </summary>
+        private void RotateTowardTarget()
+        {
+            Vector3 direction = _lockOnTarget.position - transform.position;
+            direction.y = 0f; // Keep rotation horizontal.
+
+            if (direction.sqrMagnitude < 0.01f) return;
+
+            Quaternion targetRotation = Quaternion.LookRotation(direction.normalized, Vector3.up);
+            transform.rotation = Quaternion.Slerp(
+                transform.rotation,
+                targetRotation,
+                lockOnRotationSpeed * Time.deltaTime
+            );
+        }
+
+        /// <summary>
+        /// Creates a simple diamond-shaped indicator above the locked enemy.
+        /// </summary>
+        private void CreateLockOnIndicator()
+        {
+            // Clean up old indicator.
+            if (_lockOnIndicator != null)
+                Destroy(_lockOnIndicator);
+
+            // Create a small diamond shape above the enemy using a scaled cube.
+            _lockOnIndicator = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            _lockOnIndicator.name = "LockOnIndicator";
+            _lockOnIndicator.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
+
+            // Remove collider so it doesn't interfere with gameplay.
+            Collider col = _lockOnIndicator.GetComponent<Collider>();
+            if (col != null) Destroy(col);
+
+            // Make it bright yellow and rotate it 45 degrees to look like a diamond.
+            Renderer rend = _lockOnIndicator.GetComponent<Renderer>();
+            if (rend != null)
+            {
+                rend.material = new Material(Shader.Find("Sprites/Default"));
+                rend.material.color = Color.yellow;
+            }
+
+            _lockOnIndicator.transform.rotation = Quaternion.Euler(0f, 45f, 45f);
+
+            // Parent to the enemy so it follows automatically.
+            _lockOnIndicator.transform.SetParent(_lockOnTarget);
+            _lockOnIndicator.transform.localPosition = new Vector3(0f, 2.5f, 0f);
         }
 
         // ─── Melee Attack ──────────────────────────────────────────────
 
         private void TryMeleeAttack()
         {
-            // Check cooldown: has enough time passed since the last attack?
             if (Time.time - _lastMeleeTime < meleeCooldown) return;
 
             _lastMeleeTime = Time.time;
 
-            // Calculate the center of the hit sphere.
-            // transform.position = player's feet.
-            // transform.forward = the direction the player is facing.
-            Vector3 attackCenter = transform.position + transform.forward * meleeRange + Vector3.up;
+            // Trigger melee animation.
+            if (_animator != null)
+            {
+                _animator.SetTrigger(AnimMeleeAttack);
+            }
 
-            // Find all colliders in the sphere.
-            // OverlapSphere is like an "explosion check" — it finds everything within a radius.
+            // Attack direction: toward locked target if locked on, otherwise forward.
+            Vector3 attackDirection = transform.forward;
+            if (_lockOnTarget != null)
+            {
+                Vector3 toTarget = _lockOnTarget.position - transform.position;
+                toTarget.y = 0f;
+                if (toTarget.sqrMagnitude > 0.01f)
+                    attackDirection = toTarget.normalized;
+            }
+
+            Vector3 attackCenter = transform.position + attackDirection * meleeRange + Vector3.up;
+
             Collider[] hits = Physics.OverlapSphere(attackCenter, meleeRadius, meleeHitLayers);
 
             foreach (Collider hit in hits)
             {
-                // Try to get the IDamageable component from the hit object.
                 IDamageable damageable = hit.GetComponent<IDamageable>();
                 if (damageable != null && !damageable.IsDead)
                 {
@@ -123,47 +266,68 @@ namespace Remoria.Player
 
         private void TryRangedAttack()
         {
-            // Check cooldown.
             if (Time.time - _lastRangedTime < rangedCooldown) return;
 
-            // Check if we have a projectile prefab assigned.
             if (projectilePrefab == null)
             {
-                Debug.LogWarning("[PlayerCombat] No projectile prefab assigned! Drag one into the Inspector.");
+                Debug.LogWarning("[PlayerCombat] No projectile prefab assigned!");
                 return;
             }
 
             _lastRangedTime = Time.time;
 
-            // Determine spawn position. Fall back to a position in front of the player.
+            // Trigger ranged animation.
+            if (_animator != null)
+            {
+                _animator.SetTrigger(AnimRangedAttack);
+            }
+
             Vector3 spawnPos = projectileSpawnPoint != null
                 ? projectileSpawnPoint.position
                 : transform.position + transform.forward * 1.5f + Vector3.up;
 
-            // Instantiate the projectile.
-            // Instantiate(original, position, rotation) creates a copy of the prefab.
-            GameObject projectileObj = Instantiate(projectilePrefab, spawnPos, transform.rotation);
+            // Fire direction: toward locked target if locked on, otherwise forward.
+            Vector3 fireDirection = transform.forward;
+            if (_lockOnTarget != null)
+            {
+                Vector3 toTarget = _lockOnTarget.position - spawnPos;
+                if (toTarget.sqrMagnitude > 0.01f)
+                    fireDirection = toTarget.normalized;
+            }
 
-            // Configure the projectile.
+            Quaternion spawnRotation = Quaternion.LookRotation(fireDirection);
+            GameObject projectileObj = Instantiate(projectilePrefab, spawnPos, spawnRotation);
+
             Projectile projectile = projectileObj.GetComponent<Projectile>();
             if (projectile != null)
             {
-                projectile.Initialize(rangedDamage, projectileSpeed, transform.forward);
+                projectile.Initialize(rangedDamage, projectileSpeed, fireDirection);
             }
 
             Debug.Log("[PlayerCombat] Ranged attack fired!");
         }
 
-        // ─── Gizmos (Visual Debugging) ─────────────────────────────────
-        // Gizmos are visual helpers that appear in the Unity Scene view (not in game).
-        // They help you see the melee attack range.
+        // ─── Cleanup ───────────────────────────────────────────────────
+
+        private void OnDestroy()
+        {
+            ClearLockOn();
+        }
+
+        // ─── Gizmos ────────────────────────────────────────────────────
 
         private void OnDrawGizmosSelected()
         {
-            // Draw the melee attack sphere in yellow.
             Gizmos.color = Color.yellow;
             Vector3 attackCenter = transform.position + transform.forward * meleeRange + Vector3.up;
             Gizmos.DrawWireSphere(attackCenter, meleeRadius);
+
+            // Draw line to lock-on target.
+            if (_lockOnTarget != null)
+            {
+                Gizmos.color = Color.red;
+                Gizmos.DrawLine(transform.position + Vector3.up, _lockOnTarget.position + Vector3.up);
+            }
         }
     }
 }
