@@ -1,33 +1,45 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remaria_roguelike\\",
+  "WorkspaceRootPath": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remoria_game\\Remaria_roguelike\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{3FB06B4F-AD38-0873-9124-301F34B0139D}|Assembly-CSharp.csproj|c:\\users\\kukli\\desktop\\unity\\projects\\remaria_roguelike\\assets\\scripts\\player\\playeranimator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3FB06B4F-AD38-0873-9124-301F34B0139D}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\player\\playeranimator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{3FB06B4F-AD38-0873-9124-301F34B0139D}|Assembly-CSharp.csproj|c:\\users\\kukli\\desktop\\unity\\projects\\remoria_game\\remaria_roguelike\\assets\\scripts\\enemy\\enemycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3FB06B4F-AD38-0873-9124-301F34B0139D}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\enemy\\enemycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3FB06B4F-AD38-0873-9124-301F34B0139D}|Assembly-CSharp.csproj|c:\\users\\kukli\\desktop\\unity\\projects\\remaria_roguelike\\assets\\scripts\\camera\\thirdpersoncamera.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3FB06B4F-AD38-0873-9124-301F34B0139D}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\camera\\thirdpersoncamera.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{3FB06B4F-AD38-0873-9124-301F34B0139D}|Assembly-CSharp.csproj|C:\\Users\\kukli\\Desktop\\unity\\projects\\Remoria_game\\Remaria_roguelike\\assets\\scripts\\enemy\\enemyai.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3FB06B4F-AD38-0873-9124-301F34B0139D}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\enemy\\enemyai.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3FB06B4F-AD38-0873-9124-301F34B0139D}|Assembly-CSharp.csproj|C:\\Users\\kukli\\Desktop\\unity\\projects\\Remaria_roguelike\\assets\\scripts\\ui\\healthbarui.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3FB06B4F-AD38-0873-9124-301F34B0139D}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\ui\\healthbarui.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{3FB06B4F-AD38-0873-9124-301F34B0139D}|Assembly-CSharp.csproj|C:\\Users\\kukli\\Desktop\\unity\\projects\\Remoria_game\\Remaria_roguelike\\assets\\scripts\\world\\hybridlevelgenerator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3FB06B4F-AD38-0873-9124-301F34B0139D}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\world\\hybridlevelgenerator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3FB06B4F-AD38-0873-9124-301F34B0139D}|Assembly-CSharp.csproj|C:\\Users\\kukli\\Desktop\\unity\\projects\\Remaria_roguelike\\assets\\scripts\\player\\playercombat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{3FB06B4F-AD38-0873-9124-301F34B0139D}|Assembly-CSharp.csproj|C:\\Users\\kukli\\Desktop\\unity\\projects\\Remoria_game\\Remaria_roguelike\\assets\\scripts\\enemy\\enemydatabase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3FB06B4F-AD38-0873-9124-301F34B0139D}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\enemy\\enemydatabase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3FB06B4F-AD38-0873-9124-301F34B0139D}|Assembly-CSharp.csproj|C:\\Users\\kukli\\Desktop\\unity\\projects\\Remoria_game\\Remaria_roguelike\\assets\\scripts\\player\\playercombat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3FB06B4F-AD38-0873-9124-301F34B0139D}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\player\\playercombat.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3FB06B4F-AD38-0873-9124-301F34B0139D}|Assembly-CSharp.csproj|C:\\Users\\kukli\\Desktop\\unity\\projects\\Remaria_roguelike\\assets\\scripts\\player\\playermovement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{3FB06B4F-AD38-0873-9124-301F34B0139D}|Assembly-CSharp.csproj|C:\\Users\\kukli\\Desktop\\unity\\projects\\Remoria_game\\Remaria_roguelike\\assets\\scripts\\player\\playermovement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3FB06B4F-AD38-0873-9124-301F34B0139D}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\player\\playermovement.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3FB06B4F-AD38-0873-9124-301F34B0139D}|Assembly-CSharp.csproj|C:\\Users\\kukli\\Desktop\\unity\\projects\\Remaria_roguelike\\assets\\scripts\\player\\playerinteraction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{3FB06B4F-AD38-0873-9124-301F34B0139D}|Assembly-CSharp.csproj|C:\\Users\\kukli\\Desktop\\unity\\projects\\Remoria_game\\Remaria_roguelike\\assets\\scripts\\camera\\thirdpersoncamera.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3FB06B4F-AD38-0873-9124-301F34B0139D}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\camera\\thirdpersoncamera.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3FB06B4F-AD38-0873-9124-301F34B0139D}|Assembly-CSharp.csproj|C:\\Users\\kukli\\Desktop\\unity\\projects\\Remoria_game\\Remaria_roguelike\\assets\\scripts\\ui\\healthbarui.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3FB06B4F-AD38-0873-9124-301F34B0139D}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\ui\\healthbarui.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3FB06B4F-AD38-0873-9124-301F34B0139D}|Assembly-CSharp.csproj|C:\\Users\\kukli\\Desktop\\unity\\projects\\Remoria_game\\Remaria_roguelike\\assets\\scripts\\player\\playerinteraction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3FB06B4F-AD38-0873-9124-301F34B0139D}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\player\\playerinteraction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3FB06B4F-AD38-0873-9124-301F34B0139D}|Assembly-CSharp.csproj|C:\\Users\\kukli\\Desktop\\unity\\projects\\Remaria_roguelike\\assets\\scripts\\ui\\enemyhealthbarui.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{3FB06B4F-AD38-0873-9124-301F34B0139D}|Assembly-CSharp.csproj|C:\\Users\\kukli\\Desktop\\unity\\projects\\Remoria_game\\Remaria_roguelike\\assets\\scripts\\ui\\enemyhealthbarui.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3FB06B4F-AD38-0873-9124-301F34B0139D}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\ui\\enemyhealthbarui.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -47,35 +59,71 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "PlayerAnimator.cs",
-              "DocumentMoniker": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remaria_roguelike\\Assets\\Scripts\\Player\\PlayerAnimator.cs",
-              "RelativeDocumentMoniker": "Assets\\Scripts\\Player\\PlayerAnimator.cs",
-              "ToolTip": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remaria_roguelike\\Assets\\Scripts\\Player\\PlayerAnimator.cs",
-              "RelativeToolTip": "Assets\\Scripts\\Player\\PlayerAnimator.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Title": "EnemyController.cs",
+              "DocumentMoniker": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remoria_game\\Remaria_roguelike\\Assets\\Scripts\\Enemy\\EnemyController.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Enemy\\EnemyController.cs",
+              "ToolTip": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remoria_game\\Remaria_roguelike\\Assets\\Scripts\\Enemy\\EnemyController.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Enemy\\EnemyController.cs",
+              "ViewState": "AgIAADgAAAAAAAAAAAAmwEUAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-26T05:57:19.035Z",
+              "WhenOpened": "2026-05-20T09:37:07.046Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "EnemyAI.cs",
+              "DocumentMoniker": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remoria_game\\Remaria_roguelike\\Assets\\Scripts\\Enemy\\EnemyAI.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Enemy\\EnemyAI.cs",
+              "ToolTip": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remoria_game\\Remaria_roguelike\\Assets\\Scripts\\Enemy\\EnemyAI.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Enemy\\EnemyAI.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-20T09:35:27.347Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "HybridLevelGenerator.cs",
+              "DocumentMoniker": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remoria_game\\Remaria_roguelike\\Assets\\Scripts\\World\\HybridLevelGenerator.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\World\\HybridLevelGenerator.cs",
+              "ToolTip": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remoria_game\\Remaria_roguelike\\Assets\\Scripts\\World\\HybridLevelGenerator.cs",
+              "RelativeToolTip": "Assets\\Scripts\\World\\HybridLevelGenerator.cs",
+              "ViewState": "AgIAAPAAAAAAAAAAAIBJwPsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-19T20:11:00.667Z"
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 3,
+              "Title": "EnemyDatabase.cs",
+              "DocumentMoniker": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remoria_game\\Remaria_roguelike\\Assets\\Scripts\\Enemy\\EnemyDatabase.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\Enemy\\EnemyDatabase.cs",
+              "ToolTip": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remoria_game\\Remaria_roguelike\\Assets\\Scripts\\Enemy\\EnemyDatabase.cs",
+              "RelativeToolTip": "Assets\\Scripts\\Enemy\\EnemyDatabase.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-19T18:10:49.187Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
               "Title": "PlayerCombat.cs",
-              "DocumentMoniker": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remaria_roguelike\\Assets\\Scripts\\Player\\PlayerCombat.cs",
+              "DocumentMoniker": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remoria_game\\Remaria_roguelike\\Assets\\Scripts\\Player\\PlayerCombat.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\Player\\PlayerCombat.cs",
-              "ToolTip": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remaria_roguelike\\Assets\\Scripts\\Player\\PlayerCombat.cs",
+              "ToolTip": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remoria_game\\Remaria_roguelike\\Assets\\Scripts\\Player\\PlayerCombat.cs",
               "RelativeToolTip": "Assets\\Scripts\\Player\\PlayerCombat.cs",
-              "ViewState": "AgIAABkBAAAAAAAAAAAAwDYBAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAC8BAAAAAAAAAAAAwEwBAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-02-26T01:21:26.581Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 7,
               "Title": "HealthBarUI.cs",
-              "DocumentMoniker": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remaria_roguelike\\Assets\\Scripts\\UI\\HealthBarUI.cs",
+              "DocumentMoniker": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remoria_game\\Remaria_roguelike\\Assets\\Scripts\\UI\\HealthBarUI.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\UI\\HealthBarUI.cs",
-              "ToolTip": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remaria_roguelike\\Assets\\Scripts\\UI\\HealthBarUI.cs",
+              "ToolTip": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remoria_game\\Remaria_roguelike\\Assets\\Scripts\\UI\\HealthBarUI.cs",
               "RelativeToolTip": "Assets\\Scripts\\UI\\HealthBarUI.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAGIAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -83,36 +131,35 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 6,
               "Title": "ThirdPersonCamera.cs",
-              "DocumentMoniker": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remaria_roguelike\\Assets\\Scripts\\Camera\\ThirdPersonCamera.cs",
+              "DocumentMoniker": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remoria_game\\Remaria_roguelike\\Assets\\Scripts\\Camera\\ThirdPersonCamera.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\Camera\\ThirdPersonCamera.cs",
-              "ToolTip": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remaria_roguelike\\Assets\\Scripts\\Camera\\ThirdPersonCamera.cs",
+              "ToolTip": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remoria_game\\Remaria_roguelike\\Assets\\Scripts\\Camera\\ThirdPersonCamera.cs",
               "RelativeToolTip": "Assets\\Scripts\\Camera\\ThirdPersonCamera.cs",
               "ViewState": "AgIAAEUAAAAAAAAAAAAAwGIAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-26T00:35:05.737Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-02-26T00:35:05.737Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "PlayerMovement.cs",
-              "DocumentMoniker": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remaria_roguelike\\Assets\\Scripts\\Player\\PlayerMovement.cs",
+              "DocumentMoniker": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remoria_game\\Remaria_roguelike\\Assets\\Scripts\\Player\\PlayerMovement.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\Player\\PlayerMovement.cs",
-              "ToolTip": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remaria_roguelike\\Assets\\Scripts\\Player\\PlayerMovement.cs",
+              "ToolTip": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remoria_game\\Remaria_roguelike\\Assets\\Scripts\\Player\\PlayerMovement.cs",
               "RelativeToolTip": "Assets\\Scripts\\Player\\PlayerMovement.cs",
-              "ViewState": "AgIAAAkBAAAAAAAAAAAIwCYBAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAB8BAAAAAAAAAAAAwDwBAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-02-26T00:32:13.669Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 8,
               "Title": "PlayerInteraction.cs",
-              "DocumentMoniker": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remaria_roguelike\\Assets\\Scripts\\Player\\PlayerInteraction.cs",
+              "DocumentMoniker": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remoria_game\\Remaria_roguelike\\Assets\\Scripts\\Player\\PlayerInteraction.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\Player\\PlayerInteraction.cs",
-              "ToolTip": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remaria_roguelike\\Assets\\Scripts\\Player\\PlayerInteraction.cs",
+              "ToolTip": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remoria_game\\Remaria_roguelike\\Assets\\Scripts\\Player\\PlayerInteraction.cs",
               "RelativeToolTip": "Assets\\Scripts\\Player\\PlayerInteraction.cs",
               "ViewState": "AgIAAIgAAAAAAAAAAAAAwKUAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -120,11 +167,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 9,
               "Title": "EnemyHealthBarUI.cs",
-              "DocumentMoniker": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remaria_roguelike\\Assets\\Scripts\\UI\\EnemyHealthBarUI.cs",
+              "DocumentMoniker": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remoria_game\\Remaria_roguelike\\Assets\\Scripts\\UI\\EnemyHealthBarUI.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\UI\\EnemyHealthBarUI.cs",
-              "ToolTip": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remaria_roguelike\\Assets\\Scripts\\UI\\EnemyHealthBarUI.cs",
+              "ToolTip": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remoria_game\\Remaria_roguelike\\Assets\\Scripts\\UI\\EnemyHealthBarUI.cs",
               "RelativeToolTip": "Assets\\Scripts\\UI\\EnemyHealthBarUI.cs",
               "ViewState": "AgIAAHcAAAAAAAAAAAAAwJQAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",

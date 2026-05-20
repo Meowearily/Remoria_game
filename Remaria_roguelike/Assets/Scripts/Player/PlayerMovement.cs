@@ -54,16 +54,17 @@ namespace Remoria.Player
 
         [Header("Boundaries")]
         [Tooltip("Enable to prevent the player from walking off the ground edge")]
-        [SerializeField] private bool useBoundaries = true;
+        [SerializeField] private bool useBoundaries = false;
 
         [Tooltip("Half-size of the play area")]
-        [SerializeField] private float boundaryLimit = 48f;
+        [SerializeField] private float boundaryLimit = 1000f;
 
         // ─── Private References ────────────────────────────────────────
         private Rigidbody _rb;
         private Transform _cameraTransform;
         private Animator _animator;  // Drives animation states.
         private bool _isGrounded;
+        private float _logTimer = 0f; // Timer for position logging
 
         // Animator parameter name hashes (cached for performance).
         private static readonly int AnimSpeed = Animator.StringToHash("Speed");
@@ -102,6 +103,9 @@ namespace Remoria.Player
             {
                 _cameraTransform = UnityEngine.Camera.main.transform;
             }
+
+            // Force boundaries off for procedural levels to avoid Inspector overrides
+            useBoundaries = false;
         }
 
         private void Update()
@@ -131,6 +135,14 @@ namespace Remoria.Player
             }
 
             ClampToBoundaries();
+
+            // Coordinate logging
+            _logTimer += Time.fixedDeltaTime;
+            if (_logTimer >= 2f)
+            {
+                _logTimer = 0f;
+                Debug.Log($"[PlayerLocation] X: {transform.position.x:F2}, Y: {transform.position.y:F2}, Z: {transform.position.z:F2}");
+            }
 
             // Drive the Animator's Speed parameter.
             // Uses horizontal velocity magnitude (ignoring Y) so jumping/gravity doesn't affect it.

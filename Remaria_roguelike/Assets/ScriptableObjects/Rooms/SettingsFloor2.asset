@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afae6e2201344d5458f39a79df7afa1b, type: 3}
+  m_Name: SettingsFloor2
+  m_EditorClassIdentifier: 
+  floorIndex: 2
+  minRooms: 6
+  maxRooms: 10
+  minRoomSize: 3
+  maxRoomSize: 8
+  emptyTileWeight: 5
+  baseEnemyBudget: 20
+  budgetMultiplierPerRoom: 5
+  lootChance: 0.2
+  floorTilePrefab: {fileID: 6896769750971899012, guid: 699682e7280783b47ba675b7869dd4e8, type: 3}
+  wallTilePrefab: {fileID: 7337162058753660637, guid: 2c0cb9cfebc410c4c9f6356f0c42425c, type: 3}
+  exitPrefab: {fileID: 575138985568003706, guid: 09d57dbe1d3e20e438968105b05fb11b, type: 3}
