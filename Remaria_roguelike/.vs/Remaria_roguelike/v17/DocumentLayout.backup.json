@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remoria_game\\Remaria_roguelike\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{3FB06B4F-AD38-0873-9124-301F34B0139D}|Assembly-CSharp.csproj|c:\\users\\kukli\\desktop\\unity\\projects\\remoria_game\\remaria_roguelike\\assets\\scripts\\npc\\merchantnpc.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3FB06B4F-AD38-0873-9124-301F34B0139D}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\npc\\merchantnpc.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{3FB06B4F-AD38-0873-9124-301F34B0139D}|Assembly-CSharp.csproj|c:\\users\\kukli\\desktop\\unity\\projects\\remoria_game\\remaria_roguelike\\assets\\scripts\\enemy\\enemycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3FB06B4F-AD38-0873-9124-301F34B0139D}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\enemy\\enemycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -59,6 +63,19 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "MerchantNPC.cs",
+              "DocumentMoniker": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remoria_game\\Remaria_roguelike\\Assets\\Scripts\\NPC\\MerchantNPC.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\NPC\\MerchantNPC.cs",
+              "ToolTip": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remoria_game\\Remaria_roguelike\\Assets\\Scripts\\NPC\\MerchantNPC.cs",
+              "RelativeToolTip": "Assets\\Scripts\\NPC\\MerchantNPC.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-20T17:49:56.398Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "EnemyController.cs",
               "DocumentMoniker": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remoria_game\\Remaria_roguelike\\Assets\\Scripts\\Enemy\\EnemyController.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\Enemy\\EnemyController.cs",
@@ -71,7 +88,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "EnemyAI.cs",
               "DocumentMoniker": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remoria_game\\Remaria_roguelike\\Assets\\Scripts\\Enemy\\EnemyAI.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\Enemy\\EnemyAI.cs",
@@ -83,7 +100,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "HybridLevelGenerator.cs",
               "DocumentMoniker": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remoria_game\\Remaria_roguelike\\Assets\\Scripts\\World\\HybridLevelGenerator.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\World\\HybridLevelGenerator.cs",
@@ -95,7 +112,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "EnemyDatabase.cs",
               "DocumentMoniker": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remoria_game\\Remaria_roguelike\\Assets\\Scripts\\Enemy\\EnemyDatabase.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\Enemy\\EnemyDatabase.cs",
@@ -107,7 +124,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "PlayerCombat.cs",
               "DocumentMoniker": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remoria_game\\Remaria_roguelike\\Assets\\Scripts\\Player\\PlayerCombat.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\Player\\PlayerCombat.cs",
@@ -119,7 +136,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": "HealthBarUI.cs",
               "DocumentMoniker": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remoria_game\\Remaria_roguelike\\Assets\\Scripts\\UI\\HealthBarUI.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\UI\\HealthBarUI.cs",
@@ -131,7 +148,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "ThirdPersonCamera.cs",
               "DocumentMoniker": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remoria_game\\Remaria_roguelike\\Assets\\Scripts\\Camera\\ThirdPersonCamera.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\Camera\\ThirdPersonCamera.cs",
@@ -143,7 +160,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "PlayerMovement.cs",
               "DocumentMoniker": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remoria_game\\Remaria_roguelike\\Assets\\Scripts\\Player\\PlayerMovement.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\Player\\PlayerMovement.cs",
@@ -155,7 +172,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 9,
               "Title": "PlayerInteraction.cs",
               "DocumentMoniker": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remoria_game\\Remaria_roguelike\\Assets\\Scripts\\Player\\PlayerInteraction.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\Player\\PlayerInteraction.cs",
@@ -167,7 +184,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
               "Title": "EnemyHealthBarUI.cs",
               "DocumentMoniker": "C:\\Users\\kukli\\Desktop\\unity\\projects\\Remoria_game\\Remaria_roguelike\\Assets\\Scripts\\UI\\EnemyHealthBarUI.cs",
               "RelativeDocumentMoniker": "Assets\\Scripts\\UI\\EnemyHealthBarUI.cs",

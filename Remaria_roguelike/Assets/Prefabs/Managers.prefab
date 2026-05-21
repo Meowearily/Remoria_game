@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 4056439485461778387}
   - component: {fileID: 3119999897144257974}
   - component: {fileID: 2508998679602638175}
-  - component: {fileID: 4007115962396937636}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -64,17 +63,3 @@ MonoBehaviour:
     totalCurrency: 0
     healthUpgradeLevel: 0
     damageUpgradeLevel: 0
---- !u!114 &4007115962396937636
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3492967137346474270}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6e79c6b6bff6370418778ac210ad1e6d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  baseCost: 100
-  costMultiplier: 1.5

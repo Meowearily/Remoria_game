@@ -34,6 +34,9 @@ namespace Remoria.UI
         [Tooltip("Game over screen")]
         [SerializeField] private GameObject gameOverPanel;
 
+        [Tooltip("The upgrade shop panel (used in Hub)")]
+        [SerializeField] private GameObject shopPanel;
+
         // ─── Unity Callbacks ───────────────────────────────────────────
 
         private void Start()
@@ -51,6 +54,16 @@ namespace Remoria.UI
             if (Input.GetKeyDown(KeyCode.I) && GameManager.Instance.IsPlaying)
             {
                 TogglePanel(inventoryPanel);
+            }
+
+            // Force cursor in Hub if it's hidden
+            if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "HubScene")
+            {
+                if (Cursor.visible == false && GameManager.Instance != null && GameManager.Instance.IsPlaying)
+                {
+                    Cursor.lockState = CursorLockMode.None;
+                    Cursor.visible = true;
+                }
             }
         }
 
@@ -92,11 +105,13 @@ namespace Remoria.UI
             HidePanel(dialoguePanel);
             HidePanel(pausePanel);
             HidePanel(gameOverPanel);
+            HidePanel(shopPanel);
         }
 
         // ─── Panel Accessors ───────────────────────────────────────────
         public GameObject InventoryPanel => inventoryPanel;
         public GameObject DialoguePanel => dialoguePanel;
+        public GameObject ShopPanel => shopPanel;
 
         // ─── State Handling ────────────────────────────────────────────
 
@@ -108,6 +123,7 @@ namespace Remoria.UI
                     HidePanel(pausePanel);
                     HidePanel(dialoguePanel);
                     HidePanel(gameOverPanel);
+                    HidePanel(shopPanel);
                     break;
 
                 case GameManager.GameState.Paused:

@@ -50,8 +50,48 @@ namespace Remoria.UI
         public void ReturnToHub()
         {
             Debug.Log("[GameOverUI] Returning to Hub...");
-            Time.timeScale = 1f;
-            SceneManager.LoadScene(hubSceneName);
+
+            if (LevelTransitionUI.Instance != null)
+            {
+                LevelTransitionUI.Instance.ShowTransition("Returning to Hub...", () =>
+                {
+                    // This runs when the screen is black
+                    if (GameManager.Instance != null)
+                    {
+                        GameManager.Instance.SetState(GameManager.GameState.Playing);
+                    }
+                    else
+                    {
+                        Time.timeScale = 1f;
+                    }
+
+                    if (UIManager.Instance != null)
+                    {
+                        UIManager.Instance.HideAllPanels();
+                    }
+
+                    SceneManager.LoadScene(hubSceneName);
+                });
+            }
+            else
+            {
+                // Fallback if no transition UI
+                if (GameManager.Instance != null)
+                {
+                    GameManager.Instance.SetState(GameManager.GameState.Playing);
+                }
+                else
+                {
+                    Time.timeScale = 1f;
+                }
+
+                if (UIManager.Instance != null)
+                {
+                    UIManager.Instance.HideAllPanels();
+                }
+
+                SceneManager.LoadScene(hubSceneName);
+            }
         }
 
         /// <summary>

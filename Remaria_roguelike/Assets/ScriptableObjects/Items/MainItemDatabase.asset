@@ -12,4 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04f27275aa439774882cf7f7354c0364, type: 3}
   m_Name: MainItemDatabase
   m_EditorClassIdentifier: 
-  items: []
+  items:
+  - prefab: {fileID: 8034590486338229229, guid: c7ac56fcc2fbba84b84606cd3a9128b6, type: 3}
+    weight: 5

@@ -45,27 +45,53 @@ namespace Remoria.NPC
             // Unsubscribe immediately
             DialogueManager.Instance.OnDialogueEnded -= OpenShopAfterDialogue;
             
-            // Wait a frame or just open
+            // Wait one frame to ensure DialogueManager has finished its state changes
+            StartCoroutine(OpenShopRoutine());
+        }
+
+        private System.Collections.IEnumerator OpenShopRoutine()
+        {
+            yield return null; // Wait for the end of the frame
             OpenShop();
         }
 
         private void OpenShop()
         {
+            // 1. Try using the static GlobalInstance (Fastest and most reliable)
+            if (UpgradeUI.GlobalInstance != null)
+            {
+                UpgradeUI.GlobalInstance.gameObject.SetActive(true);
+                Debug.Log("[MerchantNPC] Opened shop via GlobalInstance.");
+                return;
+            }
+
+            // 2. Try using direct reference if assigned
             if (upgradeUI != null)
             {
-                upgradeUI.OpenShop();
+                upgradeUI.gameObject.SetActive(true);
+                Debug.Log("[MerchantNPC] Opened shop via direct reference.");
+                return;
+            }
+
+            // 3. Last resort: Find it in the scene by type
+            UpgradeUI foundUI = FindObjectOfType<UpgradeUI>(true);
+            if (foundUI != null)
+            {
+                foundUI.gameObject.SetActive(true);
+                Debug.Log("[MerchantNPC] Opened shop via FindObjectOfType.");
+                return;
+            }
+
+            // 4. Ultra last resort: Find by name
+            GameObject shopObj = GameObject.Find("UpgradeShopPannel");
+            if (shopObj != null)
+            {
+                shopObj.SetActive(true);
+                Debug.Log("[MerchantNPC] Opened shop via Find(UpgradeShopPannel).");
             }
             else
             {
-                UpgradeUI ui = FindObjectOfType<UpgradeUI>(true);
-                if (ui != null)
-                {
-                    ui.OpenShop();
-                }
-                else
-                {
-                    Debug.LogWarning("[MerchantNPC] UpgradeUI not found in the scene!");
-                }
+                Debug.LogError("[MerchantNPC] CRITICAL: UpgradeShopPannel not found by name, type, or reference!");
             }
         }
 

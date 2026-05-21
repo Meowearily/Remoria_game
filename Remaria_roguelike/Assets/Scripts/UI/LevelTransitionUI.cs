@@ -24,9 +24,9 @@ namespace Remoria.UI
             if (Instance == null)
             {
                 Instance = this;
-                // Typically UI would be part of a persistent Canvas or re-instantiated
-                // Since LevelManager is DontDestroyOnLoad, we might want this to be persistent too
-                // if it's on a persistent Canvas.
+                // UI should be on a Canvas that is marked as DontDestroyOnLoad or handled carefully
+                // Here we ensure the instance itself persists.
+                DontDestroyOnLoad(gameObject);
             }
             else
             {

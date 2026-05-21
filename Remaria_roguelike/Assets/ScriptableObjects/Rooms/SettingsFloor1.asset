@@ -20,7 +20,11 @@ MonoBehaviour:
   emptyTileWeight: 5
   baseEnemyBudget: 20
   budgetMultiplierPerRoom: 5
-  lootChance: 0.2
+  lootChance: 1
+  itemDatabase: {fileID: 11400000, guid: 9d3df8c9b11431645ae92cfd6a705368, type: 2}
+  baseItemBudget: 20
+  itemBudgetMultiplierPerRoom: 5
   floorTilePrefab: {fileID: 6896769750971899012, guid: 699682e7280783b47ba675b7869dd4e8, type: 3}
   wallTilePrefab: {fileID: 7337162058753660637, guid: 2c0cb9cfebc410c4c9f6356f0c42425c, type: 3}
   exitPrefab: {fileID: 575138985568003706, guid: 09d57dbe1d3e20e438968105b05fb11b, type: 3}
+  doorPrefab: {fileID: 1821119653399313079, guid: fffe83407a364c34cbbafd7d0e2754f6, type: 3}

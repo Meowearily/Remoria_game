@@ -33,10 +33,8 @@ namespace Remoria.Core
         {
             get
             {
-                // Don't create new instances while the game is shutting down.
                 if (_applicationIsQuitting)
                 {
-                    // Silently return null during shutdown — this is expected behavior.
                     return null;
                 }
 
@@ -44,12 +42,10 @@ namespace Remoria.Core
                 {
                     if (_instance == null)
                     {
-                        // Try to find an existing instance in the scene.
                         _instance = FindObjectOfType<T>();
 
                         if (_instance == null)
                         {
-                            // None found — create a new GameObject with this component.
                             var singletonObject = new GameObject($"[Singleton] {typeof(T).Name}");
                             _instance = singletonObject.AddComponent<T>();
                             DontDestroyOnLoad(singletonObject);
@@ -61,21 +57,31 @@ namespace Remoria.Core
             }
         }
 
-        /// <summary>
-        /// Called by Unity when this object is created.
-        /// If another instance already exists, this one destroys itself.
-        /// </summary>
+        protected void _setInstance(T instance)
+        {
+            _instance = instance;
+        }
+
         protected virtual void Awake()
         {
             if (_instance == null)
             {
                 _instance = this as T;
-                DontDestroyOnLoad(gameObject);
+                if (transform.parent == null)
+                {
+                    DontDestroyOnLoad(gameObject);
+                }
             }
-            else if (_instance != this)
+            else if (_instance == this)
             {
-                // A duplicate was created — destroy it immediately.
-                Debug.LogWarning($"[Singleton] Duplicate instance of {typeof(T).Name} destroyed.");
+                if (transform.parent == null)
+                {
+                    DontDestroyOnLoad(gameObject);
+                }
+            }
+            else
+            {
+                // A duplicate was created — destroy it immediately and silently.
                 Destroy(gameObject);
             }
         }
