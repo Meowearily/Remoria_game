@@ -41,6 +41,16 @@ namespace Remoria.World
         [Range(0f, 1f)]
         public float lootChance = 0.2f;
 
+        [Header("Item Distribution")]
+        [Tooltip("Database of items that can be spawned")]
+        public ItemDatabase itemDatabase;
+
+        [Tooltip("Base budget for items per room")]
+        public int baseItemBudget = 10;
+
+        [Tooltip("Additional item budget added per room from the start")]
+        public int itemBudgetMultiplierPerRoom = 5;
+
         [Header("Visuals (Tiles)")]
         [Tooltip("Prefab for a 3x3 Floor tile")]
         public GameObject floorTilePrefab;
@@ -50,5 +60,8 @@ namespace Remoria.World
 
         [Tooltip("Prefab for the level exit (portal/stairs)")]
         public GameObject exitPrefab;
+
+        [Tooltip("Prefab for the door between corridor and room")]
+        public GameObject doorPrefab;
     }
 }

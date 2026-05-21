@@ -38,6 +38,28 @@ namespace Remoria.Core
         public int CurrentFloor => currentFloor;
 
         /// <summary>
+        /// Resets the game state and starts a new run from Floor 1.
+        /// </summary>
+        public void StartNewRun()
+        {
+            Debug.Log("[LevelManager] Starting New Run...");
+            currentFloor = 1;
+            
+            if (LevelTransitionUI.Instance != null)
+            {
+                LevelTransitionUI.Instance.ShowTransition("ENTERING DUNGEON", 
+                    onFadedIn: () => {
+                        SceneManager.LoadScene(proceduralSceneName);
+                    }
+                );
+            }
+            else
+            {
+                SceneManager.LoadScene(proceduralSceneName);
+            }
+        }
+
+        /// <summary>
         /// Call this when the player enters the exit portal.
         /// </summary>
         public void AdvanceToNextLevel()

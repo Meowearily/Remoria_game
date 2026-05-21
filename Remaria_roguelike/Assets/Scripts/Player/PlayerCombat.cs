@@ -85,6 +85,14 @@ namespace Remoria.Player
         /// <summary>Whether the player is locked onto a target.</summary>
         public bool HasLockOn => _lockOnTarget != null;
 
+        /// <summary>Add bonus damage to melee and ranged attacks.</summary>
+        public void AddBonusDamage(float meleeBonus, float rangedBonus)
+        {
+            meleeDamage += meleeBonus;
+            rangedDamage += rangedBonus;
+            Debug.Log($"[PlayerCombat] Bonus Damage applied! Melee: {meleeDamage}, Ranged: {rangedDamage}");
+        }
+
         // ─── Unity Callbacks ───────────────────────────────────────────
 
         private void Start()

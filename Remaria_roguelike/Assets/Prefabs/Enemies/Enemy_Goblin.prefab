@@ -270,6 +270,7 @@ MonoBehaviour:
   targetHealth: {fileID: 0}
   hideWhenFull: 1
   hideDelay: 3
+  heightAboveEnemy: 2.2
 --- !u!1 &6381323469916252390
 GameObject:
   m_ObjectHideFlags: 0
@@ -435,11 +436,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stats: {fileID: 11400000, guid: c220abef64817f749b9bfe7c8c0805af, type: 2}
-  patrolWaypoints:
-  - {fileID: 0}
-  - {fileID: 0}
   waypointReachDistance: 0.5
   waypointWaitTime: 2
+  maxPatrolPoints: 3
+  obstacleMask:
+    serializedVersion: 2
+    m_Bits: 2048
+  eyeHeight: 1
+  detectionInterval: 0.2
 --- !u!114 &6274478825145902942
 MonoBehaviour:
   m_ObjectHideFlags: 0

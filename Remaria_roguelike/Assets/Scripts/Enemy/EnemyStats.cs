@@ -44,6 +44,10 @@ namespace Remoria.Enemy
         [Tooltip("Running speed when chasing the player")]
         public float chaseSpeed = 4f;
 
+        [Header("Meta Progression")]
+        [Tooltip("How much currency this enemy awards on death")]
+        public int currencyValue = 10;
+
         [Header("Detection")]
         [Tooltip("How far the enemy can 'see' the player")]
         public float detectionRange = 10f;

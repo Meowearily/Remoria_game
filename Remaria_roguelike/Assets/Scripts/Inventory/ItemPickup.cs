@@ -64,13 +64,31 @@ namespace Remoria.Inventory
                 return;
             }
 
-            // Try to add to inventory.
+            // Logic for Consumables (Immediate use)
+            if (itemData.itemType == ItemType.Consumable)
+            {
+                var health = interactor.GetComponent<Remoria.Core.Health>();
+                if (health != null)
+                {
+                    if (health.CurrentHealth >= health.MaxHealth)
+                    {
+                        Debug.Log($"[ItemPickup] {itemData.itemName}: Health already full.");
+                        return;
+                    }
+
+                    health.Heal(itemData.healAmount);
+                    Debug.Log($"[ItemPickup] Player consumed {itemData.itemName} for {itemData.healAmount} HP.");
+                    Destroy(gameObject);
+                    return;
+                }
+            }
+
+            // Logic for regular items (Add to Inventory)
             bool success = InventoryManager.Instance.AddItem(itemData, amount);
 
             if (success)
             {
                 Debug.Log($"[ItemPickup] Player picked up {amount}x {itemData.itemName}.");
-                // Remove the pickup from the world.
                 Destroy(gameObject);
             }
             else
@@ -88,12 +106,15 @@ namespace Remoria.Inventory
 
         private void Update()
         {
-            // Rotate the object.
+            // 1. Smooth Rotation
             transform.Rotate(Vector3.up, rotateSpeed * Time.deltaTime);
 
-            // Bob up and down using a sine wave.
-            // Mathf.Sin returns values from -1 to 1, creating a smooth oscillation.
-            float newY = _startPosition.y + Mathf.Sin(Time.time * bobSpeed) * bobHeight;
+            // 2. Improved Bobbing (Stay above ground)
+            // Use (Sin + 1) / 2 to get a value from 0 to 1 instead of -1 to 1.
+            // This ensures the item only bobs UP from its starting position.
+            float wave = (Mathf.Sin(Time.time * bobSpeed) + 1f) * 0.5f;
+            float newY = _startPosition.y + (wave * bobHeight);
+            
             transform.position = new Vector3(
                 _startPosition.x,
                 newY,

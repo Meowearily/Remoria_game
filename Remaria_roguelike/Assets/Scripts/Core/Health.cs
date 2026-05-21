@@ -102,6 +102,23 @@ namespace Remoria.Core
             OnHealthChanged?.Invoke(_currentHealth, maxHealth);
         }
 
+        /// <summary>
+        /// Update max health and heal the difference (optional).
+        /// </summary>
+        public void SetMaxHealth(float newMax, bool healDifference = true)
+        {
+            float oldMax = maxHealth;
+            maxHealth = newMax;
+            
+            if (healDifference && _currentHealth > 0)
+            {
+                _currentHealth += (newMax - oldMax);
+                _currentHealth = Mathf.Min(_currentHealth, maxHealth);
+            }
+            
+            OnHealthChanged?.Invoke(_currentHealth, maxHealth);
+        }
+
         // ─── Private Methods ───────────────────────────────────────────
 
         private void Die()

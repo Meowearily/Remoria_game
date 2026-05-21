@@ -27,6 +27,7 @@ namespace Remoria.World
 
         private DungeonGrid _grid = new DungeonGrid();
         private List<GameObject> _spawnedObjects = new List<GameObject>();
+        private Dictionary<RoomData, RoomVisibility> _roomVisibilities = new Dictionary<RoomData, RoomVisibility>();
         private const float TileSize = 3f;
 
         private void Start()
@@ -50,8 +51,15 @@ namespace Remoria.World
             if (seed != 0) Random.InitState(seed);
             else Random.InitState(System.Environment.TickCount);
 
-            // Phase 1: Place Rooms
+            // Phase 1: Place Rooms & Init Visibility
             GenerateRooms();
+            foreach (var room in _grid.Rooms)
+            {
+                GameObject visObj = new GameObject($"RoomVis_{room.Center}");
+                var vis = visObj.AddComponent<RoomVisibility>();
+                _roomVisibilities[room] = vis;
+                _spawnedObjects.Add(visObj);
+            }
 
             // Phase 2: Connect Rooms with A* Corridors
             GenerateCorridors();
@@ -64,6 +72,9 @@ namespace Remoria.World
 
             // Phase 5: Distribute Content
             DistributeContent();
+
+            // Special: Reveal start room immediately
+            if (_grid.Rooms.Count > 0) _roomVisibilities[_grid.Rooms[0]].Reveal();
 
             Debug.Log($"[HybridLevelGenerator] Generation complete. Rooms: {_grid.Rooms.Count}");
         }
@@ -79,6 +90,7 @@ namespace Remoria.World
                 }
             }
             _spawnedObjects.Clear();
+            _roomVisibilities.Clear();
             _grid.Clear();
         }
 
@@ -86,7 +98,8 @@ namespace Remoria.World
         {
             int targetCount = Random.Range(settings.minRooms, settings.maxRooms + 1);
             int attempts = 0;
-            int maxAttempts = 150;
+            int maxAttempts = 500; // Increased attempts to allow for tight packing
+            int currentRadius = 10; // Start with a very tight placement radius
 
             while (_grid.Rooms.Count < targetCount && attempts < maxAttempts)
             {
@@ -95,15 +108,23 @@ namespace Remoria.World
                 int w = Random.Range(settings.minRoomSize, settings.maxRoomSize + 1);
                 int h = Random.Range(settings.minRoomSize, settings.maxRoomSize + 1);
                 
-                // Random position within a reasonable range
-                int x = Random.Range(-30, 30);
-                int y = Random.Range(-30, 30);
+                // Random position within the current tight radius
+                int x = Random.Range(-currentRadius, currentRadius);
+                int y = Random.Range(-currentRadius, currentRadius);
 
                 RectInt area = new RectInt(x, y, w, h);
 
                 if (_grid.IsAreaAvailable(area, padding: 2))
                 {
                     _grid.AddRoom(new RoomData(area));
+                }
+                else
+                {
+                    // If we fail to find space, expand the search radius slightly
+                    if (attempts % 10 == 0)
+                    {
+                        currentRadius++;
+                    }
                 }
             }
         }
@@ -115,22 +136,56 @@ namespace Remoria.World
             // Connect rooms in sequence to ensure 100% connectivity
             for (int i = 0; i < _grid.Rooms.Count - 1; i++)
             {
-                Vector2Int start = _grid.Rooms[i].Center;
-                Vector2Int end = _grid.Rooms[i + 1].Center;
+                RoomData roomA = _grid.Rooms[i];
+                RoomData roomB = _grid.Rooms[i + 1];
 
-                List<Vector2Int> path = AStarPathfinder.FindPath(start, end, _grid, settings.emptyTileWeight);
+                List<Vector2Int> path = AStarPathfinder.FindPath(roomA.Center, roomB.Center, _grid, settings.emptyTileWeight);
 
                 if (path != null)
                 {
-                    foreach (var pos in path)
+                    for (int j = 0; j < path.Count; j++)
                     {
-                        if (_grid.GetCell(pos) == CellType.Empty)
+                        Vector2Int pos = path[j];
+                        CellType currentType = _grid.GetCell(pos);
+
+                        if (currentType == CellType.Empty)
                         {
                             _grid.SetCell(pos, CellType.Corridor);
+
+                            if (settings.doorPrefab != null)
+                            {
+                                RoomData targetRoom = null;
+                                if (j > 0 && _grid.GetCell(path[j - 1]) == CellType.Floor) 
+                                    targetRoom = GetRoomAt(path[j - 1]);
+                                if (j < path.Count - 1 && _grid.GetCell(path[j + 1]) == CellType.Floor) 
+                                    targetRoom = GetRoomAt(path[j + 1]);
+
+                                if (targetRoom != null)
+                                {
+                                    GameObject doorObj = SpawnAtTile(pos, settings.doorPrefab, "Door", yOffset: 1.5f);
+                                    if (doorObj != null)
+                                    {
+                                        var door = doorObj.GetComponent<Door>();
+                                        if (door != null && _roomVisibilities.ContainsKey(targetRoom))
+                                        {
+                                            door.SetTargetRoom(_roomVisibilities[targetRoom]);
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
             }
+        }
+
+        private RoomData GetRoomAt(Vector2Int pos)
+        {
+            foreach (var room in _grid.Rooms)
+            {
+                if (room.Bounds.Contains(pos)) return room;
+            }
+            return null;
         }
 
         private void GenerateWalls()
@@ -236,18 +291,56 @@ namespace Remoria.World
                 exitObj.AddComponent<ExitPortal>();
             }
 
-            // 3. Enemies
+            // 3. Enemies & Items
             var availableEnemies = enemyDatabase != null ? enemyDatabase.GetEnemiesForFloor(settings.floorIndex) : null;
+            var itemDatabase = settings.itemDatabase;
 
             for (int i = 0; i < _grid.Rooms.Count; i++)
             {
                 RoomData room = _grid.Rooms[i];
-                if (i == 0) continue; // Skip enemy spawn in start room
+                if (i == 0) continue; // Skip content in start room
 
+                // Spawn Enemies
                 if (availableEnemies != null && availableEnemies.Count > 0)
                 {
-                    int budget = settings.baseEnemyBudget + (i * settings.budgetMultiplierPerRoom);
-                    SpawnEnemiesInRoom(room, availableEnemies, budget);
+                    int enemyBudget = settings.baseEnemyBudget + (i * settings.budgetMultiplierPerRoom);
+                    SpawnEnemiesInRoom(room, availableEnemies, enemyBudget);
+                }
+
+                // Spawn Items
+                if (itemDatabase != null && Random.value <= settings.lootChance)
+                {
+                    int itemBudget = settings.baseItemBudget + (i * settings.itemBudgetMultiplierPerRoom);
+                    SpawnItemsInRoom(room, itemDatabase, itemBudget);
+                }
+            }
+        }
+
+        private void SpawnItemsInRoom(RoomData room, ItemDatabase database, int budget)
+        {
+            int currentBudget = budget;
+            int maxAttempts = 15;
+            int attempts = 0;
+
+            // Gather potential free tiles (avoid center)
+            List<Vector2Int> freeTiles = new List<Vector2Int>(room.Tiles);
+            freeTiles.Remove(room.Center);
+
+            while (currentBudget > 0 && freeTiles.Count > 0 && attempts < maxAttempts)
+            {
+                attempts++;
+                var entry = database.GetRandomItem();
+                if (entry == null) break;
+
+                if (entry.weight <= currentBudget)
+                {
+                    int tileIndex = Random.Range(0, freeTiles.Count);
+                    Vector2Int spawnPos = freeTiles[tileIndex];
+
+                    SpawnAtTile(spawnPos, entry.prefab, $"Item_{entry.prefab.name}", yOffset: 0.5f);
+                    
+                    currentBudget -= entry.weight;
+                    freeTiles.RemoveAt(tileIndex);
                 }
             }
         }
@@ -294,6 +387,18 @@ namespace Remoria.World
             GameObject go = Instantiate(prefab, worldPos, Quaternion.identity);
             go.name = name;
             _spawnedObjects.Add(go);
+
+            // NEW: If this is an enemy or item, register it with the room's visibility
+            RoomData room = GetRoomAt(gridPos);
+            if (room != null && _roomVisibilities.ContainsKey(room))
+            {
+                // We only hide enemies and items, not portals or doors
+                if (name.StartsWith("Enemy") || name.StartsWith("Item"))
+                {
+                    _roomVisibilities[room].RegisterContent(go);
+                }
+            }
+
             return go;
         }
     }

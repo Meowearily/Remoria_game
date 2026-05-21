@@ -21,6 +21,11 @@ namespace Remoria.Enemy
         [SerializeField] private float waypointWaitTime = 2f;
         [SerializeField] private int maxPatrolPoints = 3;
 
+        [Header("Detection")]
+        [SerializeField] private LayerMask obstacleMask;
+        [SerializeField] private float eyeHeight = 0.5f;
+        [SerializeField] private float detectionInterval = 0.2f;
+
         // ─── Runtime State ─────────────────────────────────────────────
         public AIState CurrentState { get; private set; } = AIState.Idle;
 
@@ -31,6 +36,8 @@ namespace Remoria.Enemy
         private Transform _player;
         private Health _health;
         private bool _isDead = false;
+        private bool _cachedCanSeePlayer = false;
+        private float _detectionTimer = 0f;
         
         private RoomData _homeRoom;
         private Vector3 _spawnPosition;
@@ -295,6 +302,13 @@ namespace Remoria.Enemy
             _isDead = true;
             CurrentState = AIState.Die;
             _rb.velocity = Vector3.zero;
+
+            // Award currency to the player
+            if (stats != null && CurrencyManager.Instance != null)
+            {
+                CurrencyManager.Instance.AddCurrency(stats.currencyValue);
+            }
+
             Collider col = GetComponent<Collider>();
             if (col != null) col.enabled = false;
             Destroy(gameObject, 3f);
@@ -322,7 +336,41 @@ namespace Remoria.Enemy
         private bool CanSeePlayer()
         {
             if (_player == null) return false;
-            return Vector3.Distance(transform.position, _player.position) <= stats.detectionRange;
+
+            // Performance: Only run raycast logic every 'detectionInterval' seconds
+            if (Time.time >= _detectionTimer)
+            {
+                _detectionTimer = Time.time + detectionInterval;
+                _cachedCanSeePlayer = CheckLineOfSight();
+            }
+
+            return _cachedCanSeePlayer;
+        }
+
+        private bool CheckLineOfSight()
+        {
+            float distanceToPlayer = Vector3.Distance(transform.position, _player.position);
+            if (distanceToPlayer > stats.detectionRange) return false;
+
+            Vector3 startPos = transform.position + Vector3.up * eyeHeight;
+            Vector3 targetPos = _player.position + Vector3.up * eyeHeight;
+            Vector3 direction = (targetPos - startPos).normalized;
+
+            // Combine masks: check for both Obstacles (Walls/Doors) AND the Player
+            int playerLayer = _player.gameObject.layer;
+            int combinedMask = obstacleMask | (1 << playerLayer);
+
+            if (Physics.Raycast(startPos, direction, out RaycastHit hit, stats.detectionRange, combinedMask))
+            {
+                // If the FIRST thing hit is the player, we have LoS
+                if (hit.collider.CompareTag("Player") || hit.collider.transform == _player)
+                {
+                    return true;
+                }
+            }
+
+            // If we hit nothing or an obstacle first, we can't see the player
+            return false;
         }
 
         private void TransitionTo(AIState newState)
@@ -343,6 +391,16 @@ namespace Remoria.Enemy
             {
                 Gizmos.color = Color.blue;
                 foreach (var p in _patrolPoints) Gizmos.DrawSphere(p, 0.2f);
+            }
+
+            // Draw Line of Sight Ray
+            if (_player != null)
+            {
+                bool canSee = CanSeePlayer();
+                Gizmos.color = canSee ? Color.red : Color.white;
+                Vector3 startPos = transform.position + Vector3.up * eyeHeight;
+                Vector3 targetPos = _player.position + Vector3.up * eyeHeight;
+                Gizmos.DrawLine(startPos, targetPos);
             }
         }
     }

@@ -24,6 +24,7 @@ namespace Remoria.Dialogue
         private DialogueData _currentDialogue;
         private int _currentLineIndex;
         private bool _isDialogueActive = false;
+        private bool _startedThisFrame = false;
 
         // ─── Events ────────────────────────────────────────────────────
         /// <summary>Fired when dialogue starts. Passes the DialogueData.</summary>
@@ -66,6 +67,9 @@ namespace Remoria.Dialogue
 
             // Fire event so UI can set up.
             OnDialogueStarted?.Invoke(dialogueData);
+
+            // Set flag to ignore input in the same frame
+            _startedThisFrame = true;
 
             // Show the first line.
             ShowCurrentLine();
@@ -117,6 +121,13 @@ namespace Remoria.Dialogue
         private void Update()
         {
             if (!_isDialogueActive) return;
+
+            // Ignore input on the same frame dialogue started
+            if (_startedThisFrame)
+            {
+                _startedThisFrame = false;
+                return;
+            }
 
             // Press E or Left Click to advance dialogue.
             if (Input.GetKeyDown(KeyCode.E) || Input.GetMouseButtonDown(0))
