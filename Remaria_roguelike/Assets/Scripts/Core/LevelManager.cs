@@ -44,6 +44,18 @@ namespace Remoria.Core
         {
             Debug.Log("[LevelManager] Starting New Run...");
             currentFloor = 1;
+
+            // Reset player health before starting a new run
+            GameObject player = GameObject.FindWithTag("Player");
+            if (player != null)
+            {
+                Health h = player.GetComponent<Health>();
+                if (h != null)
+                {
+                    h.ResetHealth();
+                    Debug.Log("[LevelManager] Player health reset for New Run.");
+                }
+            }
             
             if (LevelTransitionUI.Instance != null)
             {

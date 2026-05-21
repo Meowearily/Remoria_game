@@ -70,6 +70,18 @@ namespace Remoria.UI
                         UIManager.Instance.HideAllPanels();
                     }
 
+                    // Reset player health before loading the hub
+                    GameObject player = GameObject.FindWithTag("Player");
+                    if (player != null)
+                    {
+                        Health h = player.GetComponent<Health>();
+                        if (h != null)
+                        {
+                            h.ResetHealth();
+                            Debug.Log("[GameOverUI] Player health reset for Hub.");
+                        }
+                    }
+
                     SceneManager.LoadScene(hubSceneName);
                 });
             }
@@ -88,6 +100,18 @@ namespace Remoria.UI
                 if (UIManager.Instance != null)
                 {
                     UIManager.Instance.HideAllPanels();
+                }
+
+                // Reset player health before loading the hub
+                GameObject player = GameObject.FindWithTag("Player");
+                if (player != null)
+                {
+                    Health h = player.GetComponent<Health>();
+                    if (h != null)
+                    {
+                        h.ResetHealth();
+                        Debug.Log("[GameOverUI] Player health reset for Hub (Fallback path).");
+                    }
                 }
 
                 SceneManager.LoadScene(hubSceneName);

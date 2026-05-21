@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using Remoria.Core;
 
 namespace Remoria.UI
@@ -7,12 +8,6 @@ namespace Remoria.UI
     /// <summary>
     /// Screen-space health bar for the player.
     /// The green fill bar shrinks from right to left as health decreases.
-    /// 
-    /// Setup in Unity:
-    ///   1. Create a UI → Image for the background (dark color). Attach this script.
-    ///   2. Create a child UI → Image for the fill (green).
-    ///   3. Drag the fill Image into "Fill Image".
-    ///   The script handles Image Type = Filled automatically — no manual setup needed.
     /// </summary>
     public class HealthBarUI : MonoBehaviour
     {
@@ -33,7 +28,7 @@ namespace Remoria.UI
 
         // ─── Unity Callbacks ───────────────────────────────────────────
 
-        private void Start()
+        private void Awake()
         {
             // Force the fill image to use Filled mode so fillAmount works.
             if (fillImage != null)
@@ -41,40 +36,57 @@ namespace Remoria.UI
                 fillImage.type = Image.Type.Filled;
                 fillImage.fillMethod = Image.FillMethod.Horizontal;
                 fillImage.fillOrigin = (int)Image.OriginHorizontal.Left;
-                fillImage.fillAmount = 1f;
                 fillImage.color = fillColor;
             }
-            else
-            {
-                Debug.LogWarning("[HealthBarUI] Fill Image is not assigned!");
-            }
+        }
 
-            // Auto-find the player's health if not assigned.
-            if (playerHealth == null)
+        private void OnEnable()
+        {
+            // Subscribe to scene loading to re-find the player
+            SceneManager.sceneLoaded += OnSceneLoaded;
+            
+            // Initial find
+            InitializePlayerSubscription();
+        }
+
+        private void OnDisable()
+        {
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+            UnsubscribeFromPlayer();
+        }
+
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            // Re-find player when a new scene is loaded
+            InitializePlayerSubscription();
+        }
+
+        private void InitializePlayerSubscription()
+        {
+            // Clean up old reference if it exists
+            UnsubscribeFromPlayer();
+
+            // Auto-find the player's health.
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if (player != null)
             {
-                GameObject player = GameObject.FindGameObjectWithTag("Player");
-                if (player != null)
-                {
-                    playerHealth = player.GetComponent<Health>();
-                }
+                playerHealth = player.GetComponent<Health>();
             }
 
             if (playerHealth != null)
             {
                 playerHealth.OnHealthChanged += UpdateHealthBar;
                 UpdateHealthBar(playerHealth.CurrentHealth, playerHealth.MaxHealth);
-            }
-            else
-            {
-                Debug.LogWarning("[HealthBarUI] No player Health component found!");
+                Debug.Log($"[HealthBarUI] Successfully subscribed to player: {player.name}");
             }
         }
 
-        private void OnDestroy()
+        private void UnsubscribeFromPlayer()
         {
             if (playerHealth != null)
             {
                 playerHealth.OnHealthChanged -= UpdateHealthBar;
+                playerHealth = null;
             }
         }
 
@@ -86,7 +98,7 @@ namespace Remoria.UI
 
             float percent = max > 0 ? current / max : 0f;
 
-            // Shrink the green bar from right to left. Color stays constant.
+            // Shrink the green bar from right to left.
             fillImage.fillAmount = percent;
 
             // Update text if assigned.
