@@ -1198,6 +1198,7 @@ MonoBehaviour:
   dialoguePanel: {fileID: 1394561336}
   pausePanel: {fileID: 0}
   gameOverPanel: {fileID: 114481004}
+  shopPanel: {fileID: 0}
 --- !u!114 &1096249609
 MonoBehaviour:
   m_ObjectHideFlags: 0

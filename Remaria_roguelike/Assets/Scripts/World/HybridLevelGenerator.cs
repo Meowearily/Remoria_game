@@ -64,13 +64,10 @@ namespace Remoria.World
             // Phase 2: Connect Rooms with A* Corridors
             GenerateCorridors();
 
-            // Phase 3: Add Walls
-            GenerateWalls();
-
-            // Phase 4: Physical Building
+            // Phase 3: Physical Building
             BuildLevel();
 
-            // Phase 5: Distribute Content
+            // Phase 4: Distribute Content
             DistributeContent();
 
             // Special: Reveal start room immediately
@@ -220,6 +217,8 @@ namespace Remoria.World
             GameObject container = new GameObject("GeneratedLevel");
             _spawnedObjects.Add(container);
 
+            HashSet<Vector3> spawnedColumnPositions = new HashSet<Vector3>();
+
             foreach (var cell in _grid.Cells)
             {
                 Vector3 worldPos = new Vector3(cell.Key.x * TileSize, 0, cell.Key.y * TileSize);
@@ -233,50 +232,52 @@ namespace Remoria.World
                         _spawnedObjects.Add(floorGo);
                     }
 
-                    // Check 4 cardinal neighbors to place walls on the edges of this floor tile
                     Vector2Int pos = cell.Key;
-                    bool wallN = IsEmpty(pos + Vector2Int.up);    // +Z
-                    bool wallS = IsEmpty(pos + Vector2Int.down);  // -Z
-                    bool wallE = IsEmpty(pos + Vector2Int.right); // +X
-                    bool wallW = IsEmpty(pos + Vector2Int.left);  // -X
+                    bool wallN = IsEmpty(pos + Vector2Int.up);
+                    bool wallS = IsEmpty(pos + Vector2Int.down);
+                    bool wallE = IsEmpty(pos + Vector2Int.right);
+                    bool wallW = IsEmpty(pos + Vector2Int.left);
 
-                    // Corners (L-shaped) - Check 4 possible corner combinations
-                    // North-West Corner
-                    if (wallN && wallW) SpawnWall(settings.wallCornerPrefab, worldPos, 0, container.transform);
-                    else if (wallN) SpawnStraightWall(worldPos, Vector2Int.up, container.transform);
-                    else if (wallW) SpawnStraightWall(worldPos, Vector2Int.left, container.transform);
+                    bool coveredN = false, coveredS = false, coveredE = false, coveredW = false;
+                    float cornerNudge = 0.1f;
 
-                    // North-East Corner
-                    if (wallN && wallE) SpawnWall(settings.wallCornerPrefab, worldPos, 90, container.transform);
-                    else if (wallE) SpawnStraightWall(worldPos, Vector2Int.right, container.transform);
+                    // Corners (L-shaped) - with outward nudge
+                    if (wallN && wallW) { SpawnWall(settings.wallCornerPrefab, worldPos + new Vector3(-cornerNudge, 0, cornerNudge), 90, container.transform); coveredN = true; coveredW = true; }
+                    if (wallN && wallE && !coveredN) { SpawnWall(settings.wallCornerPrefab, worldPos + new Vector3(cornerNudge, 0, cornerNudge), 180, container.transform); coveredN = true; coveredE = true; }
+                    if (wallS && wallE && !coveredS && !coveredE) { SpawnWall(settings.wallCornerPrefab, worldPos + new Vector3(cornerNudge, 0, -cornerNudge), 270, container.transform); coveredS = true; coveredE = true; }
+                    if (wallS && wallW && !coveredS && !coveredW) { SpawnWall(settings.wallCornerPrefab, worldPos + new Vector3(-cornerNudge, 0, -cornerNudge), 0, container.transform); coveredS = true; coveredW = true; }
 
-                    // South-East Corner
-                    if (wallS && wallE) SpawnWall(settings.wallCornerPrefab, worldPos, 180, container.transform);
-                    else if (wallS) SpawnStraightWall(worldPos, Vector2Int.down, container.transform);
+                    // Straight walls
+                    if (wallN && !coveredN) SpawnStraightWall(worldPos, Vector2Int.up, container.transform);
+                    if (wallS && !coveredS) SpawnStraightWall(worldPos, Vector2Int.down, container.transform);
+                    if (wallE && !coveredE) SpawnStraightWall(worldPos, Vector2Int.right, container.transform);
+                    if (wallW && !coveredW) SpawnStraightWall(worldPos, Vector2Int.left, container.transform);
 
-                    // South-West Corner
-                    if (wallS && wallW) SpawnWall(settings.wallCornerPrefab, worldPos, 270, container.transform);
-                }
-                
-                // 2. Handle Columns for External Corners (Convex corners)
-                if (cell.Value == CellType.Empty)
-                {
-                    Vector2Int pos = cell.Key;
-                    bool n = IsFloor(pos + Vector2Int.up);
-                    bool s = IsFloor(pos + Vector2Int.down);
-                    bool e = IsFloor(pos + Vector2Int.right);
-                    bool w = IsFloor(pos + Vector2Int.left);
-
+                    // 2. Handle Columns for External Corners (Convex corners)
+                    // Check 4 diagonal intersections around this tile
                     float h = TileSize / 2f;
+                    CheckAndSpawnColumn(pos, Vector2Int.up, Vector2Int.right, worldPos + new Vector3(h, 0, h), spawnedColumnPositions, container.transform);
+                    CheckAndSpawnColumn(pos, Vector2Int.up, Vector2Int.left, worldPos + new Vector3(-h, 0, h), spawnedColumnPositions, container.transform);
+                    CheckAndSpawnColumn(pos, Vector2Int.down, Vector2Int.right, worldPos + new Vector3(h, 0, -h), spawnedColumnPositions, container.transform);
+                    CheckAndSpawnColumn(pos, Vector2Int.down, Vector2Int.left, worldPos + new Vector3(-h, 0, -h), spawnedColumnPositions, container.transform);
+                }
+            }
+        }
 
-                    // Если пустая клетка граничит с полом сверху и справа, ставим колонну в их общий угол
-                    if (n && e) SpawnColumn(worldPos + new Vector3(h, 0, h), container.transform);
-                    // Справа и снизу
-                    if (e && s) SpawnColumn(worldPos + new Vector3(h, 0, -h), container.transform);
-                    // Снизу и слева
-                    if (s && w) SpawnColumn(worldPos + new Vector3(-h, 0, -h), container.transform);
-                    // Слева и сверху
-                    if (w && n) SpawnColumn(worldPos + new Vector3(-h, 0, h), container.transform);
+        private void CheckAndSpawnColumn(Vector2Int pos, Vector2Int cardA, Vector2Int cardB, Vector3 spawnPos, HashSet<Vector3> registry, Transform parent)
+        {
+            // If this tile (pos) is floor, and its two cardinal neighbors are also floors, 
+            // but the diagonal between them is empty -> we need a column at that intersection.
+            if (IsFloor(pos + cardA) && IsFloor(pos + cardB) && IsEmpty(pos + cardA + cardB))
+            {
+                // Смещаем колонну немного "внутрь" комнаты (от пустого угла к центру группы из 3-х плиток пола)
+                float nudge = 0.2f; 
+                Vector3 nudgedPos = spawnPos - new Vector3(cardA.x + cardB.x, 0, cardA.y + cardB.y) * nudge;
+
+                if (!registry.Contains(nudgedPos))
+                {
+                    registry.Add(nudgedPos);
+                    SpawnColumn(nudgedPos, parent);
                 }
             }
         }
@@ -300,12 +301,15 @@ namespace Remoria.World
 
             float rotation = 0;
             Vector3 offset = Vector3.zero;
-            float halfTile = TileSize / 2f;
+            float halfTile = TileSize / 2f; 
+            float nudge = 0.2f;
+            float effectiveOffset = halfTile - nudge; // 1.3м для тайла 3х3
 
-            if (direction == Vector2Int.up) { rotation = 0; offset = new Vector3(0, 0, halfTile); }
-            else if (direction == Vector2Int.down) { rotation = 180; offset = new Vector3(0, 0, -halfTile); }
-            else if (direction == Vector2Int.right) { rotation = 90; offset = new Vector3(halfTile, 0, 0); }
-            else if (direction == Vector2Int.left) { rotation = 270; offset = new Vector3(-halfTile, 0, 0); }
+            // Смещаем вращение на 90 градусов относительно предыдущих значений
+            if (direction == Vector2Int.up) { rotation = 90; offset = new Vector3(0, 0, effectiveOffset); }
+            else if (direction == Vector2Int.down) { rotation = 270; offset = new Vector3(0, 0, -effectiveOffset); }
+            else if (direction == Vector2Int.right) { rotation = 180; offset = new Vector3(effectiveOffset, 0, 0); }
+            else if (direction == Vector2Int.left) { rotation = 0; offset = new Vector3(-effectiveOffset, 0, 0); }
 
             GameObject wallGo = Instantiate(settings.wallStraightPrefab, tilePos + offset, Quaternion.Euler(0, rotation, 0), parent);
             _spawnedObjects.Add(wallGo);
