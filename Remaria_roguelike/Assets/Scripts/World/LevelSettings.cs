@@ -55,9 +55,17 @@ namespace Remoria.World
         [Tooltip("Prefab for a 3x3 Floor tile")]
         public GameObject floorTilePrefab;
         
-        [Tooltip("Prefab for a 3x3 Wall tile")]
-        public GameObject wallTilePrefab;
+        [Header("Wall Models")]
+        [Tooltip("Prefab for a straight wall section")]
+        public GameObject wallStraightPrefab;
 
+        [Tooltip("Prefab for an L-shaped corner wall section")]
+        public GameObject wallCornerPrefab;
+
+        [Tooltip("Prefab for a column used for external corners")]
+        public GameObject wallColumnPrefab;
+
+        [Header("Other Prefabs")]
         [Tooltip("Prefab for the level exit (portal/stairs)")]
         public GameObject exitPrefab;
 

@@ -223,25 +223,117 @@ namespace Remoria.World
             foreach (var cell in _grid.Cells)
             {
                 Vector3 worldPos = new Vector3(cell.Key.x * TileSize, 0, cell.Key.y * TileSize);
-                GameObject prefab = null;
-
-                switch (cell.Value)
+                
+                // 1. Handle Floors and Corridors
+                if (cell.Value == CellType.Floor || cell.Value == CellType.Corridor)
                 {
-                    case CellType.Floor:
-                    case CellType.Corridor:
-                        prefab = settings.floorTilePrefab;
-                        break;
-                    case CellType.Wall:
-                        prefab = settings.wallTilePrefab;
-                        break;
+                    if (settings.floorTilePrefab != null)
+                    {
+                        GameObject floorGo = Instantiate(settings.floorTilePrefab, worldPos, Quaternion.identity, container.transform);
+                        _spawnedObjects.Add(floorGo);
+                    }
+
+                    // Check 4 cardinal neighbors to place walls on the edges of this floor tile
+                    Vector2Int pos = cell.Key;
+                    bool wallN = IsEmpty(pos + Vector2Int.up);    // +Z
+                    bool wallS = IsEmpty(pos + Vector2Int.down);  // -Z
+                    bool wallE = IsEmpty(pos + Vector2Int.right); // +X
+                    bool wallW = IsEmpty(pos + Vector2Int.left);  // -X
+
+                    // Corners (L-shaped) - Check 4 possible corner combinations
+                    // North-West Corner
+                    if (wallN && wallW) SpawnWall(settings.wallCornerPrefab, worldPos, 0, container.transform);
+                    else if (wallN) SpawnStraightWall(worldPos, Vector2Int.up, container.transform);
+                    else if (wallW) SpawnStraightWall(worldPos, Vector2Int.left, container.transform);
+
+                    // North-East Corner
+                    if (wallN && wallE) SpawnWall(settings.wallCornerPrefab, worldPos, 90, container.transform);
+                    else if (wallE) SpawnStraightWall(worldPos, Vector2Int.right, container.transform);
+
+                    // South-East Corner
+                    if (wallS && wallE) SpawnWall(settings.wallCornerPrefab, worldPos, 180, container.transform);
+                    else if (wallS) SpawnStraightWall(worldPos, Vector2Int.down, container.transform);
+
+                    // South-West Corner
+                    if (wallS && wallW) SpawnWall(settings.wallCornerPrefab, worldPos, 270, container.transform);
                 }
-
-                if (prefab != null)
+                
+                // 2. Handle Columns for External Corners (Convex corners)
+                if (cell.Value == CellType.Empty)
                 {
-                    GameObject go = Instantiate(prefab, worldPos, Quaternion.identity, container.transform);
-                    _spawnedObjects.Add(go);
+                    Vector2Int pos = cell.Key;
+                    bool n = IsFloor(pos + Vector2Int.up);
+                    bool s = IsFloor(pos + Vector2Int.down);
+                    bool e = IsFloor(pos + Vector2Int.right);
+                    bool w = IsFloor(pos + Vector2Int.left);
+
+                    float h = TileSize / 2f;
+
+                    // Если пустая клетка граничит с полом сверху и справа, ставим колонну в их общий угол
+                    if (n && e) SpawnColumn(worldPos + new Vector3(h, 0, h), container.transform);
+                    // Справа и снизу
+                    if (e && s) SpawnColumn(worldPos + new Vector3(h, 0, -h), container.transform);
+                    // Снизу и слева
+                    if (s && w) SpawnColumn(worldPos + new Vector3(-h, 0, -h), container.transform);
+                    // Слева и сверху
+                    if (w && n) SpawnColumn(worldPos + new Vector3(-h, 0, h), container.transform);
                 }
             }
+        }
+
+        private void SpawnColumn(Vector3 pos, Transform parent)
+        {
+            if (settings.wallColumnPrefab == null) return;
+            GameObject colGo = Instantiate(settings.wallColumnPrefab, pos, Quaternion.identity, parent);
+            _spawnedObjects.Add(colGo);
+        }
+
+        private bool IsEmpty(Vector2Int pos)
+        {
+            CellType type = _grid.GetCell(pos);
+            return type == CellType.Empty || type == CellType.Wall;
+        }
+
+        private void SpawnStraightWall(Vector3 tilePos, Vector2Int direction, Transform parent)
+        {
+            if (settings.wallStraightPrefab == null) return;
+
+            float rotation = 0;
+            Vector3 offset = Vector3.zero;
+            float halfTile = TileSize / 2f;
+
+            if (direction == Vector2Int.up) { rotation = 0; offset = new Vector3(0, 0, halfTile); }
+            else if (direction == Vector2Int.down) { rotation = 180; offset = new Vector3(0, 0, -halfTile); }
+            else if (direction == Vector2Int.right) { rotation = 90; offset = new Vector3(halfTile, 0, 0); }
+            else if (direction == Vector2Int.left) { rotation = 270; offset = new Vector3(-halfTile, 0, 0); }
+
+            GameObject wallGo = Instantiate(settings.wallStraightPrefab, tilePos + offset, Quaternion.Euler(0, rotation, 0), parent);
+            _spawnedObjects.Add(wallGo);
+        }
+
+        private void SpawnWall(GameObject prefab, Vector3 pos, float rotation, Transform parent)
+        {
+            if (prefab == null) return;
+            GameObject go = Instantiate(prefab, pos, Quaternion.Euler(0, rotation, 0), parent);
+            _spawnedObjects.Add(go);
+        }
+
+        private bool ShouldPlaceColumn(Vector2Int pos)
+        {
+            // A column is needed if this Empty tile touches two Floor tiles that form a convex corner
+            bool n = IsFloor(pos + Vector2Int.up);
+            bool s = IsFloor(pos + Vector2Int.down);
+            bool e = IsFloor(pos + Vector2Int.right);
+            bool w = IsFloor(pos + Vector2Int.left);
+
+            // If it touches floor on two adjacent sides, it's an external corner
+            return (n && e) || (e && s) || (s && w) || (w && n);
+        }
+
+        private bool IsFloor(Vector2Int pos)
+        {
+            CellType type = _grid.GetCell(pos);
+            return type == CellType.Floor || type == CellType.Corridor;
         }
 
         private void DistributeContent()
