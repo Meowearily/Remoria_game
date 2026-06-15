@@ -24,9 +24,13 @@ MonoBehaviour:
   itemDatabase: {fileID: 11400000, guid: 9d3df8c9b11431645ae92cfd6a705368, type: 2}
   baseItemBudget: 20
   itemBudgetMultiplierPerRoom: 5
-  floorTilePrefab: {fileID: 6896769750971899012, guid: 699682e7280783b47ba675b7869dd4e8, type: 3}
+  floorTilePrefabs:
+  - {fileID: 6896769750971899012, guid: 699682e7280783b47ba675b7869dd4e8, type: 3}
+  - {fileID: 8958359231211656329, guid: 62cc710ec62864d4cab2a9a96ae3a530, type: 3}
+  - {fileID: 350414078256887249, guid: 9e64b66c3efc89f47b9689f53d2d514f, type: 3}
   wallStraightPrefab: {fileID: 7337162058753660637, guid: 2c0cb9cfebc410c4c9f6356f0c42425c, type: 3}
   wallCornerPrefab: {fileID: 4408009304807813650, guid: f674cd9090e8a6848823acdc190beb6e, type: 3}
   wallColumnPrefab: {fileID: 8722969911238089722, guid: 9bb30b75c69b93841ab7b0b92ce4c619, type: 3}
   exitPrefab: {fileID: 575138985568003706, guid: 09d57dbe1d3e20e438968105b05fb11b, type: 3}
-  doorPrefab: {fileID: 1821119653399313079, guid: fffe83407a364c34cbbafd7d0e2754f6, type: 3}
+  doorArchPrefab: {fileID: 7589074680737876207, guid: 7155a49de9ca4da4293e4c73b76d8707, type: 3}
+  doorMovingPartPrefab: {fileID: 1821119653399313079, guid: fffe83407a364c34cbbafd7d0e2754f6, type: 3}

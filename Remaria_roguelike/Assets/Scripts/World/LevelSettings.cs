@@ -52,8 +52,9 @@ namespace Remoria.World
         public int itemBudgetMultiplierPerRoom = 5;
 
         [Header("Visuals (Tiles)")]
-        [Tooltip("Prefab for a 3x3 Floor tile")]
-        public GameObject floorTilePrefab;
+        [Header("Floor Models")]
+        [Tooltip("List of possible 3x3 Floor tile prefabs")]
+        public GameObject[] floorTilePrefabs;
         
         [Header("Wall Models")]
         [Tooltip("Prefab for a straight wall section")]
@@ -69,7 +70,10 @@ namespace Remoria.World
         [Tooltip("Prefab for the level exit (portal/stairs)")]
         public GameObject exitPrefab;
 
-        [Tooltip("Prefab for the door between corridor and room")]
-        public GameObject doorPrefab;
+        [Tooltip("Prefab for the door arch (static part)")]
+        public GameObject doorArchPrefab;
+
+        [Tooltip("Prefab for the moving part of the door")]
+        public GameObject doorMovingPartPrefab;
     }
 }

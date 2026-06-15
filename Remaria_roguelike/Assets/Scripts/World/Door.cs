@@ -46,10 +46,6 @@ namespace Remoria.World
             // Reveal room content
             if (targetRoom != null) targetRoom.Reveal();
 
-            // Disable collider so it doesn't block the path even during animation
-            var col = GetComponent<Collider>();
-            if (col != null) col.isTrigger = true;
-
             StartCoroutine(OpenRoutine());
             Debug.Log("[Door] Door is opening...");
         }
@@ -67,6 +63,9 @@ namespace Remoria.World
             }
 
             transform.position = _openPosition;
+            
+            // Door is fully open, destroy it to clear the path
+            Destroy(gameObject);
         }
     }
 }

@@ -149,24 +149,46 @@ namespace Remoria.World
                         {
                             _grid.SetCell(pos, CellType.Corridor);
 
-                            if (settings.doorPrefab != null)
+                            if (settings.doorArchPrefab != null && settings.doorMovingPartPrefab != null)
                             {
                                 RoomData targetRoom = null;
+                                Vector2Int roomDir = Vector2Int.zero;
+
                                 if (j > 0 && _grid.GetCell(path[j - 1]) == CellType.Floor) 
+                                {
                                     targetRoom = GetRoomAt(path[j - 1]);
-                                if (j < path.Count - 1 && _grid.GetCell(path[j + 1]) == CellType.Floor) 
+                                    roomDir = path[j - 1] - pos;
+                                }
+                                else if (j < path.Count - 1 && _grid.GetCell(path[j + 1]) == CellType.Floor) 
+                                {
                                     targetRoom = GetRoomAt(path[j + 1]);
+                                    roomDir = path[j + 1] - pos;
+                                }
 
                                 if (targetRoom != null)
                                 {
-                                    GameObject doorObj = SpawnAtTile(pos, settings.doorPrefab, "Door", yOffset: 1.5f);
-                                    if (doorObj != null)
+                                    float rotation = 0;
+                                    if (roomDir == Vector2Int.up) rotation = 90;
+                                    else if (roomDir == Vector2Int.down) rotation = 270;
+                                    else if (roomDir == Vector2Int.right) rotation = 180;
+                                    else if (roomDir == Vector2Int.left) rotation = 0;
+
+                                    Vector3 doorPos = new Vector3(pos.x * TileSize, 0, pos.y * TileSize);
+                                    
+                                    // Spawn Arch (static)
+                                    GameObject archObj = Instantiate(settings.doorArchPrefab, doorPos, Quaternion.Euler(0, rotation, 0));
+                                    archObj.name = "DoorArch";
+                                    _spawnedObjects.Add(archObj);
+
+                                    // Spawn Door (moving part) - initially at y=1.5f as per user's previous context or default
+                                    GameObject doorObj = Instantiate(settings.doorMovingPartPrefab, doorPos + Vector3.up * 1.5f, Quaternion.Euler(0, rotation, 0));
+                                    doorObj.name = "DoorMovingPart";
+                                    _spawnedObjects.Add(doorObj);
+
+                                    var doorScript = doorObj.GetComponent<Door>();
+                                    if (doorScript != null && _roomVisibilities.ContainsKey(targetRoom))
                                     {
-                                        var door = doorObj.GetComponent<Door>();
-                                        if (door != null && _roomVisibilities.ContainsKey(targetRoom))
-                                        {
-                                            door.SetTargetRoom(_roomVisibilities[targetRoom]);
-                                        }
+                                        doorScript.SetTargetRoom(_roomVisibilities[targetRoom]);
                                     }
                                 }
                             }
@@ -226,9 +248,15 @@ namespace Remoria.World
                 // 1. Handle Floors and Corridors
                 if (cell.Value == CellType.Floor || cell.Value == CellType.Corridor)
                 {
-                    if (settings.floorTilePrefab != null)
+                    if (settings.floorTilePrefabs != null && settings.floorTilePrefabs.Length > 0)
                     {
-                        GameObject floorGo = Instantiate(settings.floorTilePrefab, worldPos, Quaternion.identity, container.transform);
+                        // Выбираем случайную модель пола
+                        GameObject randomFloor = settings.floorTilePrefabs[Random.Range(0, settings.floorTilePrefabs.Length)];
+                        
+                        // Выбираем случайный поворот (0, 90, 180, 270)
+                        float randomRotation = Random.Range(0, 4) * 90f;
+                        
+                        GameObject floorGo = Instantiate(randomFloor, worldPos, Quaternion.Euler(0, randomRotation, 0), container.transform);
                         _spawnedObjects.Add(floorGo);
                     }
 
