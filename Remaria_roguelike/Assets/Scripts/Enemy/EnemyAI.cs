@@ -33,6 +33,7 @@ namespace Remoria.Enemy
         public EnemyStats Stats => stats;
 
         private Rigidbody _rb;
+        private Animator _anim;
         private Transform _player;
         private Health _health;
         private bool _isDead = false;
@@ -57,6 +58,7 @@ namespace Remoria.Enemy
         {
             _rb = GetComponent<Rigidbody>();
             _rb.freezeRotation = true;
+            _anim = GetComponentInChildren<Animator>();
             _health = GetComponent<Health>();
             _spawnPosition = transform.position;
             _lastPosition = transform.position;
@@ -126,6 +128,18 @@ namespace Remoria.Enemy
                 case AIState.Chase: UpdateChase(); break;
                 case AIState.Attack: UpdateAttack(); break;
             }
+
+            UpdateAnimation();
+        }
+
+        private void UpdateAnimation()
+        {
+            if (_anim == null) return;
+
+            // Get horizontal velocity
+            Vector3 horizontalVelocity = new Vector3(_rb.velocity.x, 0, _rb.velocity.z);
+            float speedPercent = horizontalVelocity.magnitude / stats.chaseSpeed;
+            _anim.SetFloat("Speed", speedPercent, 0.1f, Time.deltaTime);
         }
 
         private void CheckIfStuck()
@@ -290,6 +304,12 @@ namespace Remoria.Enemy
         private void PerformAttack()
         {
             _lastAttackTime = Time.time;
+
+            if (_anim != null)
+            {
+                _anim.SetTrigger("Attack");
+            }
+
             IDamageable playerDamageable = _player.GetComponent<IDamageable>();
             if (playerDamageable != null && !playerDamageable.IsDead)
             {
@@ -302,6 +322,11 @@ namespace Remoria.Enemy
             _isDead = true;
             CurrentState = AIState.Die;
             _rb.velocity = Vector3.zero;
+
+            if (_anim != null)
+            {
+                _anim.SetBool("IsDead", true);
+            }
 
             // Award currency to the player
             if (stats != null && CurrencyManager.Instance != null)
