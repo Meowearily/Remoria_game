@@ -51,6 +51,14 @@ namespace Remoria.World
         [Tooltip("Additional item budget added per room from the start")]
         public int itemBudgetMultiplierPerRoom = 5;
 
+        [Header("Decorations")]
+        [Tooltip("List of possible decoration prefabs (boxes, barrels, columns)")]
+        public GameObject[] decorationPrefabs;
+
+        [Tooltip("Percentage of room area filled with decorations (0 to 1)")]
+        [Range(0f, 0.5f)]
+        public float decorationDensity = 0.1f;
+
         [Header("Visuals (Tiles)")]
         [Header("Floor Models")]
         [Tooltip("List of possible 3x3 Floor tile prefabs")]

@@ -372,83 +372,144 @@ namespace Remoria.World
         {
             if (_grid.Rooms.Count == 0) return;
 
-            // 1. Player Spawn (First Room Center - with safety check)
-            RoomData startRoom = _grid.Rooms[0];
-            Vector2Int spawnTile = startRoom.Center;
-
-            // Safety: if center is not floor (unlikely but possible), find any floor tile in the room
-            if (_grid.GetCell(spawnTile) != CellType.Floor)
-            {
-                foreach (var tile in startRoom.Tiles)
-                {
-                    if (_grid.GetCell(tile) == CellType.Floor)
-                    {
-                        spawnTile = tile;
-                        break;
-                    }
-                }
-            }
-
-            Vector3 spawnPos = new Vector3(spawnTile.x * TileSize, 1.5f, spawnTile.y * TileSize);
-            
-            GameObject existingPlayer = GameObject.FindGameObjectWithTag("Player");
-            if (existingPlayer != null)
-            {
-                // Move existing player and reset velocity
-                existingPlayer.transform.position = spawnPos;
-                var rb = existingPlayer.GetComponent<Rigidbody>();
-                if (rb != null) rb.velocity = Vector3.zero;
-                
-                Debug.Log($"[HybridLevelGenerator] Existing Player found. Moved to safe tile: {spawnPos}");
-            }
-            else
-            {
-                Debug.Log($"[HybridLevelGenerator] Spawning New Player at safe tile: {spawnTile} (World: {spawnPos})");
-                SpawnAtTile(spawnTile, playerPrefab, "Player", yOffset: 1.5f);
-            }
-
-            // 2. Exit Spawn (Last Room Center)
-            RoomData endRoom = _grid.Rooms[_grid.Rooms.Count - 1];
-            GameObject exitObj = SpawnAtTile(endRoom.Center, settings.exitPrefab, "ExitPortal", yOffset: 0.1f);
-            if (exitObj != null && exitObj.GetComponent<ExitPortal>() == null)
-            {
-                exitObj.AddComponent<ExitPortal>();
-            }
-
-            // 3. Enemies & Items
-            var availableEnemies = enemyDatabase != null ? enemyDatabase.GetEnemiesForFloor(settings.floorIndex) : null;
-            var itemDatabase = settings.itemDatabase;
-
             for (int i = 0; i < _grid.Rooms.Count; i++)
             {
                 RoomData room = _grid.Rooms[i];
-                if (i == 0) continue; // Skip content in start room
+                HashSet<Vector2Int> occupiedTiles = new HashSet<Vector2Int>();
 
-                // Spawn Enemies
-                if (availableEnemies != null && availableEnemies.Count > 0)
+                // 1. Decorations (Spawn first to define room layout)
+                if (settings.decorationPrefabs != null && settings.decorationPrefabs.Length > 0)
                 {
-                    int enemyBudget = settings.baseEnemyBudget + (i * settings.budgetMultiplierPerRoom);
-                    SpawnEnemiesInRoom(room, availableEnemies, enemyBudget);
+                    SpawnDecorationsInRoom(room, occupiedTiles);
                 }
 
-                // Spawn Items
-                if (itemDatabase != null && Random.value <= settings.lootChance)
+                // 2. Room-specific critical spawns
+                if (i == 0) // Start Room
                 {
-                    int itemBudget = settings.baseItemBudget + (i * settings.itemBudgetMultiplierPerRoom);
-                    SpawnItemsInRoom(room, itemDatabase, itemBudget);
+                    SpawnPlayerInRoom(room, occupiedTiles);
+                }
+                else if (i == _grid.Rooms.Count - 1) // End Room
+                {
+                    SpawnExitInRoom(room, occupiedTiles);
+                }
+
+                // 3. Enemies & Items (Spawn in remaining space)
+                if (i > 0) // Skip enemies/items in start room
+                {
+                    var availableEnemies = enemyDatabase != null ? enemyDatabase.GetEnemiesForFloor(settings.floorIndex) : null;
+                    if (availableEnemies != null && availableEnemies.Count > 0)
+                    {
+                        int enemyBudget = settings.baseEnemyBudget + (i * settings.budgetMultiplierPerRoom);
+                        SpawnEnemiesInRoom(room, availableEnemies, enemyBudget, occupiedTiles);
+                    }
+
+                    if (settings.itemDatabase != null && Random.value <= settings.lootChance)
+                    {
+                        int itemBudget = settings.baseItemBudget + (i * settings.itemBudgetMultiplierPerRoom);
+                        SpawnItemsInRoom(room, settings.itemDatabase, itemBudget, occupiedTiles);
+                    }
                 }
             }
         }
 
-        private void SpawnItemsInRoom(RoomData room, ItemDatabase database, int budget)
+        private void SpawnDecorationsInRoom(RoomData room, HashSet<Vector2Int> occupiedTiles)
+        {
+            int roomArea = room.Bounds.width * room.Bounds.height;
+            int targetCount = Mathf.RoundToInt(roomArea * settings.decorationDensity);
+            
+            // Define a "Safe Zone" to ensure the room is traversable
+            // For now, we protect the center and tiles directly adjacent to it
+            HashSet<Vector2Int> safeZone = new HashSet<Vector2Int>();
+            safeZone.Add(room.Center);
+            safeZone.Add(room.Center + Vector2Int.up);
+            safeZone.Add(room.Center + Vector2Int.down);
+            safeZone.Add(room.Center + Vector2Int.left);
+            safeZone.Add(room.Center + Vector2Int.right);
+
+            List<Vector2Int> candidateTiles = new List<Vector2Int>();
+            foreach (var tile in room.Tiles)
+            {
+                if (!safeZone.Contains(tile))
+                {
+                    candidateTiles.Add(tile);
+                }
+            }
+
+            int spawned = 0;
+            int attempts = 0;
+            while (spawned < targetCount && candidateTiles.Count > 0 && attempts < 100)
+            {
+                attempts++;
+                int index = Random.Range(0, candidateTiles.Count);
+                Vector2Int pos = candidateTiles[index];
+
+                GameObject prefab = settings.decorationPrefabs[Random.Range(0, settings.decorationPrefabs.Length)];
+                SpawnAtTile(pos, prefab, $"Deco_{prefab.name}", yOffset: 0.5f);
+                
+                occupiedTiles.Add(pos);
+                candidateTiles.RemoveAt(index);
+                spawned++;
+            }
+        }
+
+        private void SpawnPlayerInRoom(RoomData room, HashSet<Vector2Int> occupiedTiles)
+        {
+            Vector2Int spawnTile = room.Center;
+            // If center is occupied, find closest free tile
+            if (occupiedTiles.Contains(spawnTile))
+            {
+                foreach (var tile in room.Tiles)
+                {
+                    if (!occupiedTiles.Contains(tile)) { spawnTile = tile; break; }
+                }
+            }
+
+            Vector3 spawnPos = new Vector3(spawnTile.x * TileSize, 1.5f, spawnTile.y * TileSize);
+            GameObject existingPlayer = GameObject.FindGameObjectWithTag("Player");
+            
+            if (existingPlayer != null)
+            {
+                existingPlayer.transform.position = spawnPos;
+                var rb = existingPlayer.GetComponent<Rigidbody>();
+                if (rb != null) rb.velocity = Vector3.zero;
+            }
+            else
+            {
+                SpawnAtTile(spawnTile, playerPrefab, "Player", yOffset: 1.5f);
+            }
+            occupiedTiles.Add(spawnTile);
+        }
+
+        private void SpawnExitInRoom(RoomData room, HashSet<Vector2Int> occupiedTiles)
+        {
+            Vector2Int exitTile = room.Center;
+            if (occupiedTiles.Contains(exitTile))
+            {
+                foreach (var tile in room.Tiles)
+                {
+                    if (!occupiedTiles.Contains(tile)) { exitTile = tile; break; }
+                }
+            }
+
+            GameObject exitObj = SpawnAtTile(exitTile, settings.exitPrefab, "ExitPortal", yOffset: 0.1f);
+            if (exitObj != null && exitObj.GetComponent<ExitPortal>() == null)
+            {
+                exitObj.AddComponent<ExitPortal>();
+            }
+            occupiedTiles.Add(exitTile);
+        }
+
+        private void SpawnItemsInRoom(RoomData room, ItemDatabase database, int budget, HashSet<Vector2Int> occupiedTiles)
         {
             int currentBudget = budget;
             int maxAttempts = 15;
             int attempts = 0;
 
-            // Gather potential free tiles (avoid center)
-            List<Vector2Int> freeTiles = new List<Vector2Int>(room.Tiles);
-            freeTiles.Remove(room.Center);
+            List<Vector2Int> freeTiles = new List<Vector2Int>();
+            foreach (var tile in room.Tiles)
+            {
+                if (!occupiedTiles.Contains(tile)) freeTiles.Add(tile);
+            }
 
             while (currentBudget > 0 && freeTiles.Count > 0 && attempts < maxAttempts)
             {
@@ -464,19 +525,23 @@ namespace Remoria.World
                     SpawnAtTile(spawnPos, entry.prefab, $"Item_{entry.prefab.name}", yOffset: 0.5f);
                     
                     currentBudget -= entry.weight;
+                    occupiedTiles.Add(spawnPos);
                     freeTiles.RemoveAt(tileIndex);
                 }
             }
         }
 
-        private void SpawnEnemiesInRoom(RoomData room, List<EnemyEntry> pool, int budget)
+        private void SpawnEnemiesInRoom(RoomData room, List<EnemyEntry> pool, int budget, HashSet<Vector2Int> occupiedTiles)
         {
             int currentBudget = budget;
             int maxAttempts = 20;
             int attempts = 0;
 
-            List<Vector2Int> freeTiles = new List<Vector2Int>(room.Tiles);
-            freeTiles.Remove(room.Center);
+            List<Vector2Int> freeTiles = new List<Vector2Int>();
+            foreach (var tile in room.Tiles)
+            {
+                if (!occupiedTiles.Contains(tile)) freeTiles.Add(tile);
+            }
 
             while (currentBudget > 0 && freeTiles.Count > 0 && attempts < maxAttempts)
             {
@@ -490,7 +555,6 @@ namespace Remoria.World
                     
                     GameObject enemyObj = SpawnAtTile(spawnPos, enemyEntry.prefab, $"Enemy_{enemyEntry.prefab.name}", yOffset: 0.5f);
                     
-                    // NEW: Assign home room to AI
                     if (enemyObj != null)
                     {
                         var ai = enemyObj.GetComponent<Remoria.Enemy.EnemyAI>();
@@ -498,6 +562,7 @@ namespace Remoria.World
                     }
                     
                     currentBudget -= enemyEntry.powerLevel;
+                    occupiedTiles.Add(spawnPos);
                     freeTiles.RemoveAt(tileIndex);
                 }
             }

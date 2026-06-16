@@ -24,6 +24,11 @@ MonoBehaviour:
   itemDatabase: {fileID: 11400000, guid: 9d3df8c9b11431645ae92cfd6a705368, type: 2}
   baseItemBudget: 20
   itemBudgetMultiplierPerRoom: 5
+  decorationPrefabs:
+  - {fileID: 8722969911238089722, guid: 9bb30b75c69b93841ab7b0b92ce4c619, type: 3}
+  - {fileID: 4003087415118299285, guid: c590b384ede47be4498afaa744d2759f, type: 3}
+  - {fileID: 3459172175286433834, guid: fb68d6dd3950c994c8cbc8d2ba24fab5, type: 3}
+  decorationDensity: 0.1
   floorTilePrefabs:
   - {fileID: 6896769750971899012, guid: 699682e7280783b47ba675b7869dd4e8, type: 3}
   - {fileID: 8958359231211656329, guid: 62cc710ec62864d4cab2a9a96ae3a530, type: 3}
